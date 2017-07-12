@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">pubnative-android-qa-demo</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="very_long_string">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis felis at enim rhoncus aliquet. Donec sollicitudin pellentesque arcu vel condimentum. Nullam non est faucibus, maximus massa a, auctor augue.</string>
+
+</resources>
