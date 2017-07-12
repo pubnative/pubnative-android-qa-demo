@@ -51,8 +51,8 @@ class NativeAdPresenter : BasePresenter<NativeAdView>() {
     }
 
     fun showAd() {
-        view()?.showAdClick(mNativeAd)
         view()?.showAdContainer()
+        view()?.showAdClick(mNativeAd)
     }
 
     fun  enableResourcesCache(state: Boolean) {
