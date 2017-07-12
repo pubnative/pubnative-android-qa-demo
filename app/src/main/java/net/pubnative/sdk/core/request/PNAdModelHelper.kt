@@ -1,0 +1,20 @@
+package net.pubnative.sdk.core.request
+
+import java.lang.Exception
+
+class PNAdModelHelper {
+
+    fun fetchResources(adModel: PNAdModel?, listener : (exception : Exception?) -> Unit) {
+        adModel?.fetchAssets(object : PNAdModel.FetchListener {
+            override fun onFetchFail(model: PNAdModel?, exception: Exception?) {
+                listener(exception)
+            }
+
+            override fun onFetchFinish(model: PNAdModel?) {
+                listener(null)
+            }
+
+        })
+    }
+
+}
