@@ -102,6 +102,7 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
 
     override fun showAdClick(nativeAd: PNAdModel?) {
         btn_show.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
+        cl_ad_container.removeAllViews()
         val adView : View = layoutInflater.inflate(R.layout.native_ad_layout, cl_ad_container, true)
 
         iv_click_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
@@ -155,6 +156,6 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
         btn_fetch.visibility = View.INVISIBLE
         iv_click_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
         iv_impression_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
-        cl_ad_container.visibility = View.INVISIBLE
+        cl_native_ad_container.visibility = View.INVISIBLE
     }
 }
