@@ -1,7 +1,8 @@
-package net.pubnative.qa.demo.mvp
+package net.pubnative.qa.demo.presenters
 
 import net.pubnative.qa.demo.R
-import net.pubnative.qa.demo.ui.FeedAdapter
+import net.pubnative.qa.demo.activities.FeedAdapter
+import net.pubnative.qa.demo.views.LayoutAdView
 import net.pubnative.sdk.layouts.PNLargeLayout
 import net.pubnative.sdk.layouts.PNLayout
 import net.pubnative.sdk.layouts.PNMediumLayout
@@ -10,17 +11,13 @@ import java.lang.Exception
 
 class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
 
-    var mAppToken : String? = null
-    var mPlacementName : String? = null
+    lateinit var mAppToken : String
+    lateinit var mPlacementName : String
     lateinit var mLayout : PNLayout
     var mFeedItems : MutableList<FeedAdapter.FeedItem> = mutableListOf()
 
     enum class Size {
         SMALL, MEDIUM, LARGE
-    }
-
-    override fun onNext() {
-
     }
 
     override fun updateView() {

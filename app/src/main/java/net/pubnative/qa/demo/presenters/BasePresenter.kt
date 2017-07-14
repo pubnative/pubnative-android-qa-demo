@@ -1,4 +1,4 @@
-package net.pubnative.qa.demo.mvp
+package net.pubnative.qa.demo.presenters
 
 import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicLong
@@ -23,7 +23,5 @@ abstract class BasePresenter<V> {
     }
 
     abstract fun updateView()
-
-    abstract fun onNext()
 
 }

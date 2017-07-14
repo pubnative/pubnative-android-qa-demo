@@ -1,6 +1,5 @@
-package net.pubnative.qa.demo.ui
+package net.pubnative.qa.demo.activities
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,9 @@ class FeedAdapter(val items: MutableList<FeedItem>) : RecyclerView.Adapter<Recyc
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         if (holder?.itemViewType == 0) {
-            (holder as ViewAdHolder).bindAdView(items[position].adView as View)
+            items[position].adView?.let {
+                (holder as ViewAdHolder).bindAdView(it)
+            }
         } else {
             (holder as ViewHolder).textView.text = items[position].text
         }

@@ -1,21 +1,21 @@
-package net.pubnative.qa.demo.ui
+package net.pubnative.qa.demo.activities
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_select_ad.*
 import net.pubnative.qa.demo.PresenterManager
 import net.pubnative.qa.demo.R
-import net.pubnative.qa.demo.mvp.MainPresenter
-import net.pubnative.qa.demo.mvp.SelectAdView
+import net.pubnative.qa.demo.presenters.MainPresenter
+import net.pubnative.qa.demo.views.SelectAdView
 import java.lang.Exception
 
 class SelectAdActivity : AppCompatActivity(), SelectAdView {
 
-    private var presenter : MainPresenter? = null
-    private var presenterId : Long? = null
+    private lateinit var presenter: MainPresenter
+    private var presenterId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +37,13 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     override fun onResume() {
         super.onResume()
 
-        presenter?.bindView(this)
+        presenter.bindView(this)
     }
 
     override fun onPause() {
         super.onPause()
 
-        presenter?.unbindView()
+        presenter.unbindView()
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
@@ -64,8 +64,8 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     override fun goToNative() {
         val intent = Intent(this, NativeAdActivity::class.java)
         val bundle = Bundle()
-        bundle.putString("app_token", presenter?.mAppToken)
-        bundle.putString("placement_name", presenter?.mPlacementName)
+        bundle.putString("app_token", presenter.mAppToken)
+        bundle.putString("placement_name", presenter.mPlacementName)
         intent.putExtras(bundle)
         startActivity(intent)
     }
@@ -77,8 +77,8 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     override fun goToSmallLayout() {
         val intent = Intent(this, SmallLayoutAdActivity::class.java)
         val bundle = Bundle()
-        bundle.putString("app_token", presenter?.mAppToken)
-        bundle.putString("placement_name", presenter?.mPlacementName)
+        bundle.putString("app_token", presenter.mAppToken)
+        bundle.putString("placement_name", presenter.mPlacementName)
         intent.putExtras(bundle)
         startActivity(intent)
     }
@@ -107,8 +107,8 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     override fun goToMediumLayout() {
         val intent = Intent(this, MediumLayoutActivity::class.java)
         val bundle = Bundle()
-        bundle.putString("app_token", presenter?.mAppToken)
-        bundle.putString("placement_name", presenter?.mPlacementName)
+        bundle.putString("app_token", presenter.mAppToken)
+        bundle.putString("placement_name", presenter.mPlacementName)
         intent.putExtras(bundle)
         startActivity(intent)
     }
@@ -116,8 +116,8 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     override fun goToLargeLayout() {
         val intent = Intent(this, LargeLayoutActivity::class.java)
         val bundle = Bundle()
-        bundle.putString("app_token", presenter?.mAppToken)
-        bundle.putString("placement_name", presenter?.mPlacementName)
+        bundle.putString("app_token", presenter.mAppToken)
+        bundle.putString("placement_name", presenter.mPlacementName)
         intent.putExtras(bundle)
         startActivity(intent)
     }

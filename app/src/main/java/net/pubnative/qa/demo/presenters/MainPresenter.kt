@@ -1,7 +1,9 @@
-package net.pubnative.qa.demo.mvp
+package net.pubnative.qa.demo.presenters
 
 
 import net.pubnative.qa.demo.model.TrackingParam
+import net.pubnative.qa.demo.views.BaseView
+import net.pubnative.qa.demo.views.MainView
 import net.pubnative.sdk.core.Pubnative
 import net.pubnative.sdk.core.config.PNConfigManager
 import net.pubnative.sdk.core.request.PNAdTargetingModel
@@ -55,7 +57,7 @@ class MainPresenter : BasePresenter<BaseView>() {
         mPlacementName = placementName
     }
 
-    override fun onNext() {
+    fun onNext() {
         (view() as MainView).goToNext()
     }
 

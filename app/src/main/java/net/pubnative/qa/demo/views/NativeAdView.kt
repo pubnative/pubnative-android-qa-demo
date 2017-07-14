@@ -1,7 +1,6 @@
-package net.pubnative.qa.demo.mvp
+package net.pubnative.qa.demo.views
 
 import net.pubnative.sdk.core.request.PNAdModel
-import java.lang.Exception
 
 interface NativeAdView : BaseView {
 
@@ -9,7 +8,7 @@ interface NativeAdView : BaseView {
 
     fun fetchAdClick()
 
-    fun showAdClick(nativeAd: PNAdModel?)
+    fun showAdClick(nativeAd: PNAdModel)
 
     fun enableResourcesCache(state: Boolean)
 

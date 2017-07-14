@@ -1,6 +1,6 @@
 package net.pubnative.qa.demo
 
-import net.pubnative.qa.demo.mvp.BasePresenter
+import net.pubnative.qa.demo.presenters.BasePresenter
 import java.util.concurrent.atomic.AtomicLong
 
 class PresenterManager {
@@ -21,12 +21,8 @@ class PresenterManager {
         return 0L
     }
 
-    fun <P : BasePresenter<*>> restorePresenter(id: Long?): P? {
-        if (presenters.containsKey(id)) {
-            return presenters.get(id) as P
-        } else {
-            return null
-        }
+    fun <P : BasePresenter<*>> restorePresenter(id: Long?): P {
+        return presenters.get(id) as P
     }
 
     companion object {

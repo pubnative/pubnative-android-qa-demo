@@ -1,4 +1,4 @@
-package net.pubnative.qa.demo.ui
+package net.pubnative.qa.demo.activities
 
 import android.content.Context
 import android.graphics.PorterDuff
@@ -13,12 +13,12 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_layout_ad.*
 import net.pubnative.qa.demo.PresenterManager
 import net.pubnative.qa.demo.R
-import net.pubnative.qa.demo.mvp.LayoutAdPresenter
-import net.pubnative.qa.demo.mvp.LayoutAdView
+import net.pubnative.qa.demo.presenters.LayoutAdPresenter
+import net.pubnative.qa.demo.views.LayoutAdView
 
 class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
 
-    private var presenter : LayoutAdPresenter? = null
+    private lateinit var presenter : LayoutAdPresenter
     private var presenterId : Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,8 +34,8 @@ class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 
-        presenter?.mAppToken = intent.extras?.getString("app_token")
-        presenter?.mPlacementName = intent.extras?.getString("placement_name")
+        presenter.mAppToken = intent.extras?.getString("app_token").toString()
+        presenter.mPlacementName = intent.extras?.getString("placement_name").toString()
 
         setContentView(R.layout.activity_layout_ad)
 
@@ -45,19 +45,19 @@ class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
     override fun onResume() {
         super.onResume()
 
-        presenter?.bindView(this)
+        presenter.bindView(this)
     }
 
     override fun onPause() {
         super.onPause()
 
-        presenter?.unbindView()
+        presenter.unbindView()
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
 
-        if (presenterId != null) {
-            outState?.putLong("presenter_id", presenterId as Long)
+        presenterId?.let {
+            outState?.putLong("presenter_id", it)
         }
 
         super.onSaveInstanceState(outState, outPersistentState)
@@ -75,7 +75,7 @@ class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
 
     override fun updateView(appToken: String?, placementName: String?) {
         if (appToken != null && placementName != null) {
-            val adapter = FeedAdapter(presenter?.mFeedItems as MutableList<FeedAdapter.FeedItem>)
+            val adapter = FeedAdapter(presenter.mFeedItems)
             rv_feed.adapter = adapter
         }
         rv_feed.adapter.notifyDataSetChanged()
@@ -86,15 +86,15 @@ class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
             iv_click_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
             iv_impression_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
             cl_layout_ad_container.visibility = View.INVISIBLE
-            presenter?.onLoadClick(LayoutAdPresenter.Size.MEDIUM)
+            presenter.onLoadClick(LayoutAdPresenter.Size.MEDIUM)
         }
 
         btn_show.setOnClickListener {
-            presenter?.onShowClick()
+            presenter.onShowClick()
         }
 
         btn_start_tracking.setOnClickListener {
-            presenter?.onStartTrackingClick()
+            presenter.onStartTrackingClick()
         }
 
         btn_stop_tracking.setOnClickListener {

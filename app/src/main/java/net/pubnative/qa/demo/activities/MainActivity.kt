@@ -1,4 +1,4 @@
-package net.pubnative.qa.demo.ui
+package net.pubnative.qa.demo.activities
 
 import android.content.Context
 import android.content.Intent
@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import net.pubnative.qa.demo.PresenterManager
 import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.model.TrackingParam
-import net.pubnative.qa.demo.mvp.MainPresenter
-import net.pubnative.qa.demo.mvp.MainView
+import net.pubnative.qa.demo.presenters.MainPresenter
+import net.pubnative.qa.demo.views.MainView
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.view.inputmethod.InputMethodManager
@@ -25,7 +25,7 @@ import java.lang.Exception
 
 class MainActivity : AppCompatActivity(), MainView {
 
-    private var presenter : MainPresenter? = null
+    private lateinit var presenter : MainPresenter
     private var presenterId : Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,19 +47,19 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onResume() {
         super.onResume()
 
-        presenter?.bindView(this)
+        presenter.bindView(this)
     }
 
     override fun onPause() {
         super.onPause()
 
-        presenter?.unbindView()
+        presenter.unbindView()
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
 
-        if (presenterId != null) {
-            outState?.putLong("presenter_id", presenterId as Long)
+        presenterId?.let {
+            outState?.putLong("presenter_id", it)
         }
 
         super.onSaveInstanceState(outState, outPersistentState)
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun saveAppToken(appToken: String) {
-        presenter?.onAppTokenSave(appToken)
+        presenter.onAppTokenSave(appToken)
     }
 
     override fun getContext(): Context {
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun initializePubnative() {
-        presenter?.onPubnativeInitialize()
+        presenter.onPubnativeInitialize()
     }
 
     override fun updateView(appToken: String?, placementName: String?) {
@@ -96,17 +96,17 @@ class MainActivity : AppCompatActivity(), MainView {
         }
 
         sw_testing.setOnCheckedChangeListener({ _, state ->
-            presenter?.onTestModeChanged(state)
+            presenter.onTestModeChanged(state)
         })
 
         sw_coppa.setOnCheckedChangeListener({ _, state ->
-            presenter?.onCoppaModeChanged(state)
+            presenter.onCoppaModeChanged(state)
         })
 
         sp_placement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent : AdapterView<*>, view : View, pos : Int, id : Long) {
-                presenter?.onPlacementSelect(parent.getItemAtPosition(pos).toString())
+                presenter.onPlacementSelect(parent.getItemAtPosition(pos).toString())
             }
 
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {
@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity(), MainView {
         }
 
         btn_next.setOnClickListener {
-            presenter?.onNext()
+            presenter.onNext()
         }
 
         trackingParamsList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
@@ -142,13 +142,16 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun goToNext() {
         val intent = Intent(this, SelectAdActivity::class.java)
         val bundle = Bundle()
-        bundle.putLong("presenter_id", presenterId as Long)
+        presenterId?.let {
+            bundle.putLong("presenter_id", it)
+        }
         intent.putExtras(bundle)
         startActivity(intent)
     }
 
     override fun updateInitButton() {
         btn_init.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
+        btn_next.isEnabled = true
     }
 
     override fun updateTrackingParams(params: MutableList<TrackingParam>) {
@@ -168,12 +171,12 @@ class MainActivity : AppCompatActivity(), MainView {
         dialogView.sp_param_name.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, spinnerItems)
 
         dialogBuilder.setTitle("Add new param")
-        dialogBuilder.setPositiveButton("Add", { dialog, whichButton ->
-            presenter?.onTrackingParamAdded(dialogView.sp_param_name.selectedItem.toString(), dialogView.et_param_value.text.toString())
+        dialogBuilder.setPositiveButton("Add", { _, _ ->
+            presenter.onTrackingParamAdded(dialogView.sp_param_name.selectedItem.toString(), dialogView.et_param_value.text.toString())
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(dialogView.windowToken, 0)
         })
-        dialogBuilder.setNegativeButton("Cancel", { dialog, whichButton ->
+        dialogBuilder.setNegativeButton("Cancel", { _, _ ->
             //pass
         })
         val b = dialogBuilder.create()

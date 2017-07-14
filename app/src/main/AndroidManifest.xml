@@ -12,18 +12,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.NativeAdActivity" />
-        <activity android:name=".ui.SelectAdActivity" />
-        <activity android:name=".ui.SmallLayoutAdActivity" />
-        <activity android:name=".ui.MediumLayoutActivity" />
-        <activity android:name=".ui.LargeLayoutActivity"></activity>
+        <activity android:name=".activities.NativeAdActivity" />
+        <activity android:name=".activities.SelectAdActivity" />
+        <activity android:name=".activities.SmallLayoutAdActivity" />
+        <activity android:name=".activities.MediumLayoutActivity" />
+        <activity android:name=".activities.LargeLayoutActivity"></activity>
     </application>
 
 </manifest>

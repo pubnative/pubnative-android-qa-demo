@@ -1,26 +1,22 @@
-package net.pubnative.qa.demo.mvp
+package net.pubnative.qa.demo.presenters
 
 import android.content.Context
 import android.view.ViewGroup
+import net.pubnative.qa.demo.views.NativeAdView
 import net.pubnative.sdk.core.request.PNAdModel
 import net.pubnative.sdk.core.request.PNAdModelHelper
 import net.pubnative.sdk.core.request.PNRequest
 import java.lang.Exception
-import kotlin.properties.Delegates
 
 class NativeAdPresenter : BasePresenter<NativeAdView>() {
 
-    var mAppToken : String? = null
-    var mPlacementName : String? = null
-    var mNativeAd : PNAdModel? = null
+    lateinit var mAppToken : String
+    lateinit var mPlacementName : String
+    lateinit var mNativeAd : PNAdModel
     var mResourcesCache : Boolean? = null
 
     override fun updateView() {
         view()?.updateView("", "")
-    }
-
-    override fun onNext() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     fun makeRequest(context: Context) {
@@ -32,8 +28,10 @@ class NativeAdPresenter : BasePresenter<NativeAdView>() {
             }
 
             override fun onPNRequestLoadFinish(request: PNRequest?, adModel: PNAdModel?) {
-                mNativeAd = adModel
-                view()?.loadAdClick()
+                adModel?.let {
+                    mNativeAd = it
+                    view()?.loadAdClick()
+                }
             }
 
         })
@@ -60,7 +58,7 @@ class NativeAdPresenter : BasePresenter<NativeAdView>() {
     }
 
     fun startTracking(view: ViewGroup) {
-        mNativeAd?.setListener(object : PNAdModel.Listener {
+        mNativeAd.setListener(object : PNAdModel.Listener {
             override fun onPNAdClick(p0: PNAdModel?) {
                 view()?.updateClickIndicator()
             }
@@ -70,11 +68,11 @@ class NativeAdPresenter : BasePresenter<NativeAdView>() {
             }
 
         })
-        mNativeAd?.startTracking(view)
+        mNativeAd.startTracking(view)
     }
 
     fun stopTracking() {
-        mNativeAd?.stopTracking()
+        mNativeAd.stopTracking()
     }
 
 }

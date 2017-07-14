@@ -1,4 +1,4 @@
-package net.pubnative.qa.demo.mvp
+package net.pubnative.qa.demo.views
 
 import android.content.Context
 import java.lang.Exception

@@ -1,4 +1,4 @@
-package net.pubnative.qa.demo.ui
+package net.pubnative.qa.demo.activities
 
 import android.content.Context
 import android.graphics.PorterDuff
@@ -12,16 +12,16 @@ import android.widget.*
 import kotlinx.android.synthetic.main.activity_native_ad.*
 import kotlinx.android.synthetic.main.native_ad_layout.view.*
 import net.pubnative.qa.demo.R
-import net.pubnative.qa.demo.mvp.NativeAdView
+import net.pubnative.qa.demo.views.NativeAdView
 import net.pubnative.qa.demo.PresenterManager
-import net.pubnative.qa.demo.mvp.NativeAdPresenter
+import net.pubnative.qa.demo.presenters.NativeAdPresenter
 import net.pubnative.sdk.core.request.PNAdModel
 import java.lang.Exception
 
 
 class NativeAdActivity : AppCompatActivity(), NativeAdView {
 
-    private var presenter : NativeAdPresenter? = null
+    private lateinit var presenter : NativeAdPresenter
     private var presenterId : Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +37,8 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 
-        presenter?.mAppToken = intent.extras?.getString("app_token")
-        presenter?.mPlacementName = intent.extras?.getString("placement_name")
+        presenter.mAppToken = intent.extras?.getString("app_token").toString()
+        presenter.mPlacementName = intent.extras?.getString("placement_name").toString()
 
         setContentView(R.layout.activity_native_ad)
     }
@@ -46,13 +46,13 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
     override fun onResume() {
         super.onResume()
 
-        presenter?.bindView(this)
+        presenter.bindView(this)
     }
 
     override fun onPause() {
         super.onPause()
 
-        presenter?.unbindView()
+        presenter.unbindView()
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
@@ -74,8 +74,10 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
         btn_load.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
         if (!cb_cache_resources.isChecked) {
             btn_fetch.visibility = View.VISIBLE
+            btn_fetch.isEnabled = true
         }
         btn_show.visibility = View.VISIBLE
+        btn_show.isEnabled = true
     }
 
     override fun getContext(): Context {
@@ -84,48 +86,51 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
 
     override fun fetchAdClick() {
         btn_fetch.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
+        btn_fetch.isEnabled = false
     }
 
     override fun updateView(appToken: String?, placementName: String?) {
         btn_load.setOnClickListener {
             reseteFieldsState()
-            presenter?.enableResourcesCache(cb_cache_resources.isChecked)
-            presenter?.makeRequest(this)
+            presenter.enableResourcesCache(cb_cache_resources.isChecked)
+            presenter.makeRequest(this)
         }
         btn_fetch.setOnClickListener {
-            presenter?.fetchResources()
+            presenter.fetchResources()
         }
         btn_show.setOnClickListener {
-            presenter?.showAd()
+            presenter.showAd()
         }
     }
 
-    override fun showAdClick(nativeAd: PNAdModel?) {
+    override fun showAdClick(nativeAd: PNAdModel ) {
         btn_show.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
+        btn_show.isEnabled = false
+
         cl_ad_container.removeAllViews()
         val adView : View = layoutInflater.inflate(R.layout.native_ad_layout, cl_ad_container, true)
 
         iv_click_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
         iv_impression_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
 
-        nativeAd?.withBanner(adView.fl_native_banner)?.
-                withCallToAction(adView.btn_native_cta)?.
-                withTitle(adView.tv_native_title)?.
-                withDescription(adView.tv_native_description)?.
-                withIcon(adView.iv_native_icon)
+        nativeAd.withBanner(adView.fl_native_banner)
+                .withCallToAction(adView.btn_native_cta)
+                .withTitle(adView.tv_native_title)
+                .withDescription(adView.tv_native_description)
+                .withIcon(adView.iv_native_icon)
 
         btn_start_tracking.setOnClickListener {
-            presenter?.startTracking(adView as ViewGroup)
+            presenter.startTracking(adView as ViewGroup)
         }
 
         btn_stop_tracking.setOnClickListener {
-            presenter?.stopTracking()
+            presenter.stopTracking()
         }
 
     }
 
     override fun enableResourcesCache(state: Boolean) {
-        presenter?.enableResourcesCache(state)
+        presenter.enableResourcesCache(state)
     }
 
     override fun showAdContainer() {
