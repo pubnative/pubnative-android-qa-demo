@@ -21,8 +21,9 @@ class PresenterManager {
         return 0L
     }
 
-    fun <P : BasePresenter<*>> restorePresenter(id: Long?): P {
-        return presenters.get(id) as P
+    @Suppress("UNCHECKED_CAST")
+    fun <P : BasePresenter<*>> restorePresenter(id: Long?): P? {
+        return presenters[id] as? P
     }
 
     companion object {

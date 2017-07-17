@@ -6,6 +6,7 @@ import net.pubnative.qa.demo.views.BaseView
 import net.pubnative.qa.demo.views.MainView
 import net.pubnative.sdk.core.Pubnative
 import net.pubnative.sdk.core.config.PNConfigManager
+import net.pubnative.sdk.core.config.model.PNConfigModel
 import net.pubnative.sdk.core.request.PNAdTargetingModel
 
 class MainPresenter : BasePresenter<BaseView>() {
@@ -20,28 +21,37 @@ class MainPresenter : BasePresenter<BaseView>() {
     }
 
     fun onAppTokenSave(appToken: String) {
+        view()?.showIndicator()
         if (appToken.isEmpty()) {
+            view()?.hideIndicator()
             view()?.showErrorMessage(Exception("App Token is empty!"))
         } else {
             mAppToken = appToken
-            (view() as MainView).showConfigs()
+            PNConfigManager.getConfig(view()?.getContext(), appToken) {  model ->
+                (view() as MainView).showConfigs()
+                val list = ArrayList<String>()
+                if (!model.placements.isEmpty()) {
+                    for ((name, _) in model.placements) {
+                        list.add(name)
+                    }
+                    (view() as MainView).updatePlacementsList(list)
+                    adapterValues.clear()
+                    adapterValues.addAll((mTrackingParams.toDictionaryWithIap().flatMap {
+                        listOf(TrackingParam(it.key.toString(), it.value.toString()))
+                    }).toMutableList())
+                }
+                view()?.hideIndicator()
+            }
         }
     }
 
     fun onPubnativeInitialize() {
+        view()?.showIndicator()
         Pubnative.setTargeting(mTrackingParams)
-        PNConfigManager.getConfig(view()?.getContext(), mAppToken, { model ->
+        PNConfigManager.getConfig(view()?.getContext(), mAppToken, {
             (view() as MainView).updateInitButton()
-            val list = ArrayList<String>()
-            for ((name, _) in model.placements) {
-                list.add(name)
-            }
-            (view() as MainView).updatePlacementsList(list)
-            adapterValues.clear()
-            adapterValues.addAll((mTrackingParams.toDictionaryWithIap().flatMap {
-                listOf(TrackingParam(it.key.toString(), it.value.toString()))
-            }).toMutableList())
             (view() as MainView).updateTrackingParams(adapterValues)
+            view()?.hideIndicator()
         })
     }
 

@@ -38,7 +38,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Call To Action" />
-
     <FrameLayout
         android:id="@+id/fl_native_banner"
         android:layout_width="0dp"

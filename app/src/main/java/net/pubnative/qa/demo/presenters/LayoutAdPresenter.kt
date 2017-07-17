@@ -29,6 +29,8 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
 
     fun onLoadClick(size: Size) {
 
+        view()?.showIndicator()
+
         mLayout = when (size) {
             Size.SMALL -> PNSmallLayout()
             Size.MEDIUM -> PNMediumLayout()
@@ -37,10 +39,12 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
 
         mLayout.setLoadListener(object : PNLayout.LoadListener{
             override fun onPNLayoutLoadFinish(layout: PNLayout?) {
+                view()?.hideIndicator()
                 view()?.loadAdClick()
             }
 
             override fun onPNLayoutLoadFail(layout: PNLayout?, exception: Exception?) {
+                view()?.hideIndicator()
                 view()?.showErrorMessage(exception)
             }
 
@@ -49,6 +53,9 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
     }
 
     fun onShowClick() {
+
+        view()?.showAdClick()
+
         if (mLayout is PNSmallLayout) {
             showSmallAd(mLayout as PNSmallLayout)
         } else if (mLayout is PNMediumLayout) {
@@ -59,6 +66,9 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
     }
 
     fun onStartTrackingClick() {
+
+        view()?.showIndicator()
+
         mLayout.setTrackListener(object : PNLayout.TrackListener {
             override fun onPNLayoutTrackImpression(p0: PNLayout?) {
                 view()?.updateImpressionIndicator()
@@ -77,6 +87,8 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
             (mLayout as PNMediumLayout).startTrackingView()
         }
 
+        view()?.hideIndicator()
+
     }
 
     fun onStopTrackingClick() {
@@ -93,17 +105,20 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
         mFeedItems.removeAt(7)
         mFeedItems.add(7, FeedAdapter.FeedItem("", layout.getView(view()?.getContext())))
         view()?.showAdClick()
+        view()?.hideIndicator()
     }
 
     private fun showMediumAd(layout: PNMediumLayout) {
         mFeedItems.removeAt(7)
         mFeedItems.add(7, FeedAdapter.FeedItem("", layout.getView(view()?.getContext())))
         view()?.showAdClick()
+        view()?.hideIndicator()
     }
 
     private fun showLargeAd(layout: PNLargeLayout) {
         layout.setViewListener(object : PNLargeLayout.ViewListener {
             override fun onPNLayoutViewShown(p0: PNLayout?) {
+                view()?.hideIndicator()
                 view()?.showAdClick()
             }
 

@@ -21,8 +21,9 @@ import java.lang.Exception
 
 class NativeAdActivity : AppCompatActivity(), NativeAdView {
 
-    private lateinit var presenter : NativeAdPresenter
+    private var presenter : NativeAdPresenter? = null
     private var presenterId : Long? = null
+    private lateinit var progress : View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +38,8 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 
-        presenter.mAppToken = intent.extras?.getString("app_token").toString()
-        presenter.mPlacementName = intent.extras?.getString("placement_name").toString()
+        presenter?.mAppToken = intent.extras?.getString("app_token").toString()
+        presenter?.mPlacementName = intent.extras?.getString("placement_name").toString()
 
         setContentView(R.layout.activity_native_ad)
     }
@@ -46,13 +47,13 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
     override fun onResume() {
         super.onResume()
 
-        presenter.bindView(this)
+        presenter?.bindView(this)
     }
 
     override fun onPause() {
         super.onPause()
 
-        presenter.unbindView()
+        presenter?.unbindView()
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
@@ -75,9 +76,12 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
         if (!cb_cache_resources.isChecked) {
             btn_fetch.visibility = View.VISIBLE
             btn_fetch.isEnabled = true
+        } else {
+            btn_show.isEnabled = true
+            btn_show.visibility = View.VISIBLE
         }
-        btn_show.visibility = View.VISIBLE
-        btn_show.isEnabled = true
+
+        btn_start_tracking.background.colorFilter = null
     }
 
     override fun getContext(): Context {
@@ -87,19 +91,21 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
     override fun fetchAdClick() {
         btn_fetch.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
         btn_fetch.isEnabled = false
+        btn_show.isEnabled = true
+        btn_show.visibility = View.VISIBLE
     }
 
     override fun updateView(appToken: String?, placementName: String?) {
         btn_load.setOnClickListener {
             reseteFieldsState()
-            presenter.enableResourcesCache(cb_cache_resources.isChecked)
-            presenter.makeRequest(this)
+            presenter?.enableResourcesCache(cb_cache_resources.isChecked)
+            presenter?.makeRequest(this)
         }
         btn_fetch.setOnClickListener {
-            presenter.fetchResources()
+            presenter?.fetchResources()
         }
         btn_show.setOnClickListener {
-            presenter.showAd()
+            presenter?.showAd()
         }
     }
 
@@ -120,17 +126,20 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
                 .withIcon(adView.iv_native_icon)
 
         btn_start_tracking.setOnClickListener {
-            presenter.startTracking(adView as ViewGroup)
+            presenter?.startTracking(adView as ViewGroup)
+            btn_start_tracking.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
         }
 
         btn_stop_tracking.setOnClickListener {
-            presenter.stopTracking()
+            presenter?.stopTracking()
+            iv_click_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
+            btn_start_tracking.background.colorFilter = null
         }
 
     }
 
     override fun enableResourcesCache(state: Boolean) {
-        presenter.enableResourcesCache(state)
+        presenter?.enableResourcesCache(state)
     }
 
     override fun showAdContainer() {
@@ -162,5 +171,14 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
         iv_click_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
         iv_impression_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
         cl_native_ad_container.visibility = View.INVISIBLE
+    }
+
+    override fun hideIndicator() {
+        window.decorView.findViewById<ViewGroup>(android.R.id.content).removeView(progress)
+    }
+
+    override fun showIndicator() {
+        progress = layoutInflater.inflate(R.layout.progress_bar_indicator, null)
+        window.decorView.findViewById<ViewGroup>(android.R.id.content).addView(progress)
     }
 }

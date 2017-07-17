@@ -16,7 +16,7 @@ class FeedAdapter(val items: MutableList<FeedItem>) : RecyclerView.Adapter<Recyc
                 (holder as ViewAdHolder).bindAdView(it)
             }
         } else {
-            (holder as ViewHolder).textView.text = items[position].text
+            (holder as ViewHolder)
         }
     }
 
@@ -28,7 +28,7 @@ class FeedAdapter(val items: MutableList<FeedItem>) : RecyclerView.Adapter<Recyc
             val holder = ViewAdHolder(itemView)
             return holder
         } else {
-            val itemView = LayoutInflater.from(parent?.context).inflate(android.R.layout.simple_list_item_1, parent, false)
+            val itemView = LayoutInflater.from(parent?.context).inflate(R.layout.infeed_dummy_item, parent, false)
             return ViewHolder(itemView)
         }
     }
@@ -43,9 +43,7 @@ class FeedAdapter(val items: MutableList<FeedItem>) : RecyclerView.Adapter<Recyc
         }
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView = view.findViewById(android.R.id.text1)
-    }
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     class ViewAdHolder(view: View) : RecyclerView.ViewHolder(view) {
         val adContainer : LinearLayout = view.findViewById(R.id.ll_ad_container)

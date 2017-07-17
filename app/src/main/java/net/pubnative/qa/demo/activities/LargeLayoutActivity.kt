@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v4.content.ContextCompat
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_layout_ad.*
@@ -16,8 +18,9 @@ import net.pubnative.qa.demo.views.LayoutAdView
 
 class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
 
-    private lateinit var presenter : LayoutAdPresenter
+    private var presenter : LayoutAdPresenter? = null
     private var presenterId : Long? = null
+    private lateinit var progress : View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +35,8 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 
-        presenter.mAppToken = intent.extras?.getString("app_token").toString()
-        presenter.mPlacementName = intent.extras?.getString("placement_name").toString()
+        presenter?.mAppToken = intent.extras?.getString("app_token").toString()
+        presenter?.mPlacementName = intent.extras?.getString("placement_name").toString()
 
         setContentView(R.layout.activity_layout_ad)
     }
@@ -41,13 +44,13 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
     override fun onResume() {
         super.onResume()
 
-        presenter.bindView(this)
+        presenter?.bindView(this)
     }
 
     override fun onPause() {
         super.onPause()
 
-        presenter.unbindView()
+        presenter?.unbindView()
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
@@ -72,14 +75,18 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
     override fun updateView(appToken: String?, placementName: String?) {
         if (appToken != null && placementName != null) {
 
+            btn_load.background.colorFilter = null
             btn_load.setOnClickListener {
                 (it as Button).background.colorFilter = null
                 btn_show.background.colorFilter = null
-                presenter.onLoadClick(LayoutAdPresenter.Size.LARGE)
+                btn_show.isEnabled = false
+                presenter?.onLoadClick(LayoutAdPresenter.Size.LARGE)
             }
 
+            btn_show.isEnabled = false
+            btn_show.background.colorFilter = null
             btn_show.setOnClickListener {
-                presenter.onShowClick()
+                presenter?.onShowClick()
             }
         }
 
@@ -87,6 +94,7 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
 
     override fun loadAdClick() {
         btn_load.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
+        btn_show.isEnabled = true
     }
 
     override fun updateClickIndicator() {
@@ -103,5 +111,14 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
 
     override fun showAdClick() {
         btn_show.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
+    }
+
+    override fun hideIndicator() {
+        window.decorView.findViewById<ViewGroup>(android.R.id.content).removeView(progress)
+    }
+
+    override fun showIndicator() {
+        progress = layoutInflater.inflate(R.layout.progress_bar_indicator, null)
+        window.decorView.findViewById<ViewGroup>(android.R.id.content).addView(progress)
     }
 }

@@ -6,8 +6,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_layout_ad.*
@@ -18,8 +20,9 @@ import net.pubnative.qa.demo.views.LayoutAdView
 
 class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
 
-    private lateinit var presenter : LayoutAdPresenter
+    private var presenter : LayoutAdPresenter? = null
     private var presenterId : Long? = null
+    private lateinit var progress : View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +37,8 @@ class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 
-        presenter.mAppToken = intent.extras?.getString("app_token").toString()
-        presenter.mPlacementName = intent.extras?.getString("placement_name").toString()
+        presenter?.mAppToken = intent.extras?.getString("app_token").toString()
+        presenter?.mPlacementName = intent.extras?.getString("placement_name").toString()
 
         setContentView(R.layout.activity_layout_ad)
 
@@ -45,13 +48,13 @@ class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
     override fun onResume() {
         super.onResume()
 
-        presenter.bindView(this)
+        presenter?.bindView(this)
     }
 
     override fun onPause() {
         super.onPause()
 
-        presenter.unbindView()
+        presenter?.unbindView()
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
@@ -75,30 +78,38 @@ class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
 
     override fun updateView(appToken: String?, placementName: String?) {
         if (appToken != null && placementName != null) {
-            val adapter = FeedAdapter(presenter.mFeedItems)
+            val adapter = presenter?.mFeedItems?.let { FeedAdapter(it) }
             rv_feed.adapter = adapter
         }
         rv_feed.adapter.notifyDataSetChanged()
 
+        btn_load.background.colorFilter = null
         btn_load.setOnClickListener {
             (it as Button).background.colorFilter = null
             btn_show.background.colorFilter = null
+            btn_show.isEnabled = false
             iv_click_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
             iv_impression_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
             cl_layout_ad_container.visibility = View.INVISIBLE
-            presenter.onLoadClick(LayoutAdPresenter.Size.MEDIUM)
+            presenter?.onLoadClick(LayoutAdPresenter.Size.MEDIUM)
         }
 
+        btn_show.isEnabled = false
+        btn_show.background.colorFilter = null
         btn_show.setOnClickListener {
-            presenter.onShowClick()
+            presenter?.onShowClick()
         }
 
+        btn_start_tracking.background.colorFilter = null
         btn_start_tracking.setOnClickListener {
-            presenter.onStartTrackingClick()
+            presenter?.onStartTrackingClick()
+            btn_start_tracking.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
         }
 
         btn_stop_tracking.setOnClickListener {
             presenter?.onStopTrackingClick()
+            btn_start_tracking.background.colorFilter = null
+            iv_click_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
         }
 
         cl_layout_ad_container.visibility = View.INVISIBLE
@@ -108,6 +119,7 @@ class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
 
     override fun loadAdClick() {
         btn_load.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
+        btn_show.isEnabled = true
     }
 
     override fun updateClickIndicator() {
@@ -127,4 +139,14 @@ class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
         btn_show.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
         rv_feed.adapter.notifyItemChanged(7)
     }
+
+    override fun hideIndicator() {
+        window.decorView.findViewById<ViewGroup>(android.R.id.content).removeView(progress)
+    }
+
+    override fun showIndicator() {
+        progress = layoutInflater.inflate(R.layout.progress_bar_indicator, null)
+        window.decorView.findViewById<ViewGroup>(android.R.id.content).addView(progress)
+    }
+
 }
