@@ -9,6 +9,10 @@ import java.lang.Exception
 
 interface BaseView {
 
+    companion object {
+        const val PRESENTER_ID = "presenter_id"
+    }
+
     fun getContext(): Context
 
     fun updateView(appToken: String?, placementName: String?)

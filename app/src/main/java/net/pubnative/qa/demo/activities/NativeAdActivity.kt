@@ -15,6 +15,7 @@ import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.views.NativeAdView
 import net.pubnative.qa.demo.PresenterManager
 import net.pubnative.qa.demo.presenters.NativeAdPresenter
+import net.pubnative.qa.demo.views.BaseView
 import net.pubnative.sdk.core.request.PNAdModel
 import java.lang.Exception
 
@@ -28,7 +29,7 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val id = intent.extras?.getLong("presenter_id", -1L)
+        val id = intent.extras?.getLong(BaseView.PRESENTER_ID, -1L)
 
         if (id != null && id > -1) {
             presenter = PresenterManager.instance.restorePresenter<NativeAdPresenter>(id)
@@ -59,7 +60,7 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
 
         if (presenterId != null) {
-            outState?.putLong("presenter_id", presenterId as Long)
+            outState?.putLong(BaseView.PRESENTER_ID, presenterId as Long)
         }
 
         super.onSaveInstanceState(outState, outPersistentState)
@@ -68,7 +69,7 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        presenterId = savedInstanceState?.getLong("presenter_id")
+        presenterId = savedInstanceState?.getLong(BaseView.PRESENTER_ID)
     }
 
     override fun loadAdClick() {

@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_layout_ad.*
 import net.pubnative.qa.demo.PresenterManager
 import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.presenters.LayoutAdPresenter
+import net.pubnative.qa.demo.views.BaseView
 import net.pubnative.qa.demo.views.LayoutAdView
 
 class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
@@ -25,7 +26,7 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val id = intent.extras?.getLong("presenter_id", -1L)
+        val id = intent.extras?.getLong(BaseView.PRESENTER_ID, -1L)
 
         if (id != null && id > -1) {
             presenter = PresenterManager.instance.restorePresenter<LayoutAdPresenter>(id)
@@ -56,7 +57,7 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
 
         if (presenterId != null) {
-            outState?.putLong("presenter_id", presenterId as Long)
+            outState?.putLong(BaseView.PRESENTER_ID, presenterId as Long)
         }
 
         super.onSaveInstanceState(outState, outPersistentState)
@@ -65,7 +66,7 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        presenterId = savedInstanceState?.getLong("presenter_id")
+        presenterId = savedInstanceState?.getLong(BaseView.PRESENTER_ID)
     }
 
     override fun getContext(): Context {

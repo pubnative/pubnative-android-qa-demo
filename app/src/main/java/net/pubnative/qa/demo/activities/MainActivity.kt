@@ -21,6 +21,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import kotlinx.android.synthetic.main.add_tracking_param_dialog.view.*
+import net.pubnative.qa.demo.views.BaseView
 import java.lang.Exception
 
 
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val id = intent.extras?.getLong("presenter_id", -1L)
+        val id = intent.extras?.getLong(BaseView.PRESENTER_ID, -1L)
 
         if (id != null && id > -1) {
             presenter = PresenterManager.instance.restorePresenter<MainPresenter>(id)
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
 
         presenterId?.let {
-            outState?.putLong("presenter_id", it)
+            outState?.putLong(BaseView.PRESENTER_ID, it)
         }
 
         super.onSaveInstanceState(outState, outPersistentState)
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        presenterId = savedInstanceState?.getLong("presenter_id")
+        presenterId = savedInstanceState?.getLong(BaseView.PRESENTER_ID)
     }
 
     override fun saveAppToken(appToken: String) {
@@ -145,7 +146,7 @@ class MainActivity : AppCompatActivity(), MainView {
         val intent = Intent(this, SelectAdActivity::class.java)
         val bundle = Bundle()
         presenterId?.let {
-            bundle.putLong("presenter_id", it)
+            bundle.putLong(BaseView.PRESENTER_ID, it)
         }
         intent.putExtras(bundle)
         startActivity(intent)
