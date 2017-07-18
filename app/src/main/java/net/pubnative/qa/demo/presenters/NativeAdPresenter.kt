@@ -20,10 +20,14 @@ class NativeAdPresenter : BasePresenter<NativeAdView>() {
     }
 
     fun makeRequest(context: Context) {
+
+        view()?.showIndicator()
+
         val request : PNRequest = PNRequest()
         if (mResourcesCache != null) request.setCacheResources(mResourcesCache as Boolean)
         request.start(context, mAppToken, mPlacementName, object : PNRequest.Listener {
             override fun onPNRequestLoadFail(request: PNRequest?, exception: Exception?) {
+                view()?.hideIndicator()
                 view()?.showErrorMessage(exception)
             }
 
@@ -31,6 +35,7 @@ class NativeAdPresenter : BasePresenter<NativeAdView>() {
                 adModel?.let {
                     mNativeAd = it
                     view()?.loadAdClick()
+                    view()?.hideIndicator()
                 }
             }
 
@@ -38,19 +43,26 @@ class NativeAdPresenter : BasePresenter<NativeAdView>() {
     }
 
     fun fetchResources() {
+
+        view()?.showIndicator()
+
         val helper = PNAdModelHelper()
         helper.fetchResources(mNativeAd, {exception ->
             if (exception == null) {
                 view()?.fetchAdClick()
+                view()?.hideIndicator()
             } else {
+                view()?.hideIndicator()
                 view()?.showErrorMessage(exception)
             }
         })
     }
 
     fun showAd() {
+        view()?.showIndicator()
         view()?.showAdContainer()
         view()?.showAdClick(mNativeAd)
+        view()?.hideIndicator()
     }
 
     fun  enableResourcesCache(state: Boolean) {
@@ -58,6 +70,9 @@ class NativeAdPresenter : BasePresenter<NativeAdView>() {
     }
 
     fun startTracking(view: ViewGroup) {
+
+        view()?.showIndicator()
+
         mNativeAd.setListener(object : PNAdModel.Listener {
             override fun onPNAdClick(p0: PNAdModel?) {
                 view()?.updateClickIndicator()
@@ -69,6 +84,7 @@ class NativeAdPresenter : BasePresenter<NativeAdView>() {
 
         })
         mNativeAd.startTracking(view)
+        view()?.hideIndicator()
     }
 
     fun stopTracking() {
