@@ -11,6 +11,8 @@ interface BaseView {
 
     companion object {
         const val PRESENTER_ID = "presenter_id"
+        const val APPTOKEN = "apptoken"
+        const val PLACEMENT = "placement"
     }
 
     fun getContext(): Context

@@ -38,8 +38,8 @@ class SmallLayoutAdActivity : AppCompatActivity(), LayoutAdView {
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 
-        presenter?.mAppToken = intent.extras?.getString("app_token").toString()
-        presenter?.mPlacementName = intent.extras?.getString("placement_name").toString()
+        presenter?.mAppToken = intent.extras?.getString(BaseView.APPTOKEN).toString()
+        presenter?.mPlacementName = intent.extras?.getString(BaseView.PLACEMENT).toString()
 
         setContentView(R.layout.activity_layout_ad)
 
