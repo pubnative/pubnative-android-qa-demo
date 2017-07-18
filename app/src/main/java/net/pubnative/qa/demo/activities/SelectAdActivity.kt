@@ -9,18 +9,19 @@ import kotlinx.android.synthetic.main.activity_select_ad.*
 import net.pubnative.qa.demo.PresenterManager
 import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.presenters.MainPresenter
+import net.pubnative.qa.demo.views.BaseView
 import net.pubnative.qa.demo.views.SelectAdView
 import java.lang.Exception
 
 class SelectAdActivity : AppCompatActivity(), SelectAdView {
 
-    private lateinit var presenter: MainPresenter
+    private var presenter: MainPresenter? = null
     private var presenterId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val id = intent.extras?.getLong("presenter_id", -1L)
+        val id = intent.extras?.getLong(BaseView.PRESENTER_ID, -1L)
 
         if (id != null && id > -1) {
             presenter = PresenterManager.instance.restorePresenter<MainPresenter>(id)
@@ -37,19 +38,19 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     override fun onResume() {
         super.onResume()
 
-        presenter.bindView(this)
+        presenter?.bindView(this)
     }
 
     override fun onPause() {
         super.onPause()
 
-        presenter.unbindView()
+        presenter?.unbindView()
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
 
         if (presenterId != null) {
-            outState?.putLong("presenter_id", presenterId as Long)
+            outState?.putLong(BaseView.PRESENTER_ID, presenterId as Long)
         }
 
         super.onSaveInstanceState(outState, outPersistentState)
@@ -58,14 +59,14 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        presenterId = savedInstanceState?.getLong("presenter_id")
+        presenterId = savedInstanceState?.getLong(BaseView.PRESENTER_ID)
     }
 
     override fun goToNative() {
         val intent = Intent(this, NativeAdActivity::class.java)
         val bundle = Bundle()
-        bundle.putString("app_token", presenter.mAppToken)
-        bundle.putString("placement_name", presenter.mPlacementName)
+        bundle.putString(BaseView.APPTOKEN, presenter?.mAppToken)
+        bundle.putString(BaseView.PLACEMENT, presenter?.mPlacementName)
         intent.putExtras(bundle)
         startActivity(intent)
     }
@@ -77,8 +78,8 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     override fun goToSmallLayout() {
         val intent = Intent(this, SmallLayoutAdActivity::class.java)
         val bundle = Bundle()
-        bundle.putString("app_token", presenter.mAppToken)
-        bundle.putString("placement_name", presenter.mPlacementName)
+        bundle.putString(BaseView.APPTOKEN, presenter?.mAppToken)
+        bundle.putString(BaseView.PLACEMENT, presenter?.mPlacementName)
         intent.putExtras(bundle)
         startActivity(intent)
     }
@@ -107,8 +108,8 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     override fun goToMediumLayout() {
         val intent = Intent(this, MediumLayoutActivity::class.java)
         val bundle = Bundle()
-        bundle.putString("app_token", presenter.mAppToken)
-        bundle.putString("placement_name", presenter.mPlacementName)
+        bundle.putString(BaseView.APPTOKEN, presenter?.mAppToken)
+        bundle.putString(BaseView.PLACEMENT, presenter?.mPlacementName)
         intent.putExtras(bundle)
         startActivity(intent)
     }
@@ -116,13 +117,21 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     override fun goToLargeLayout() {
         val intent = Intent(this, LargeLayoutActivity::class.java)
         val bundle = Bundle()
-        bundle.putString("app_token", presenter.mAppToken)
-        bundle.putString("placement_name", presenter.mPlacementName)
+        bundle.putString(BaseView.APPTOKEN, presenter?.mAppToken)
+        bundle.putString(BaseView.PLACEMENT, presenter?.mPlacementName)
         intent.putExtras(bundle)
         startActivity(intent)
     }
 
     override fun showErrorMessage(exception: Exception?) {
+        // Do nothing
+    }
+
+    override fun hideIndicator() {
+        // Do nothing
+    }
+
+    override fun showIndicator() {
         // Do nothing
     }
 }
