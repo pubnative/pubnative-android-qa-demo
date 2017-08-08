@@ -22,8 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Show"
         android:enabled="false"
+        android:text="Show"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_load"
@@ -125,6 +125,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Impression"
@@ -132,8 +135,7 @@
             app:layout_constraintEnd_toStartOf="@+id/textView4"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_impression_indicator"
-            android:layout_marginEnd="0dp" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_impression_indicator" />
 
         <TextView
             android:id="@+id/textView4"
@@ -141,6 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
             android:layout_marginTop="8dp"
             android:text="Click"
             app:layout_constraintBottom_toBottomOf="parent"
