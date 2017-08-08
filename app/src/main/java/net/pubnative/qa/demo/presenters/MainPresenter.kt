@@ -30,7 +30,10 @@ class MainPresenter : BasePresenter<BaseView>() {
             PNConfigManager.getConfig(view()?.getContext(), appToken) {  model ->
                 (view() as MainView).showConfigs()
                 val list = ArrayList<String>()
-                if (!model.placements.isEmpty()) {
+                if (model == null || model.placements.isEmpty()) {
+                    view()?.showErrorMessage(Exception("Config is not loaded!"))
+                    (view() as MainView).hideConfigs()
+                } else {
                     for ((name, _) in model.placements) {
                         list.add(name)
                     }
