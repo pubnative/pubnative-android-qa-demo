@@ -6,7 +6,6 @@ import net.pubnative.qa.demo.views.BaseView
 import net.pubnative.qa.demo.views.MainView
 import net.pubnative.sdk.core.Pubnative
 import net.pubnative.sdk.core.config.PNConfigManager
-import net.pubnative.sdk.core.config.model.PNConfigModel
 import net.pubnative.sdk.core.request.PNAdTargetingModel
 
 class MainPresenter : BasePresenter<BaseView>() {
@@ -25,6 +24,7 @@ class MainPresenter : BasePresenter<BaseView>() {
         if (appToken.isEmpty()) {
             view()?.hideIndicator()
             view()?.showErrorMessage(Exception("App Token is empty!"))
+            (view() as MainView).hideConfigs()
         } else {
             mAppToken = appToken
             PNConfigManager.getConfig(view()?.getContext(), appToken) {  model ->
