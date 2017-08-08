@@ -2,20 +2,20 @@ package net.pubnative.qa.demo.activities
 
 import android.content.Context
 import android.graphics.PorterDuff
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_native_ad.*
 import kotlinx.android.synthetic.main.native_ad_layout.view.*
-import net.pubnative.qa.demo.R
-import net.pubnative.qa.demo.views.NativeAdView
 import net.pubnative.qa.demo.PresenterManager
+import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.presenters.NativeAdPresenter
 import net.pubnative.qa.demo.views.BaseView
+import net.pubnative.qa.demo.views.NativeAdView
 import net.pubnative.sdk.core.request.PNAdModel
 import java.lang.Exception
 

@@ -3,25 +3,28 @@ package net.pubnative.qa.demo.activities
 import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.widget.*
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.Adapter
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.add_tracking_param_dialog.view.*
 import net.pubnative.qa.demo.PresenterManager
 import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.model.TrackingParam
 import net.pubnative.qa.demo.presenters.MainPresenter
-import net.pubnative.qa.demo.views.MainView
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.DividerItemDecoration
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import kotlinx.android.synthetic.main.add_tracking_param_dialog.view.*
 import net.pubnative.qa.demo.views.BaseView
+import net.pubnative.qa.demo.views.MainView
 import java.lang.Exception
 
 
@@ -145,9 +148,8 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun goToNext() {
         val intent = Intent(this, SelectAdActivity::class.java)
         val bundle = Bundle()
-        presenterId?.let {
-            bundle.putLong(BaseView.PRESENTER_ID, it)
-        }
+        bundle.putString(BaseView.APPTOKEN, presenter?.mAppToken)
+        bundle.putString(BaseView.PLACEMENT, presenter?.mPlacementName)
         intent.putExtras(bundle)
         startActivity(intent)
     }

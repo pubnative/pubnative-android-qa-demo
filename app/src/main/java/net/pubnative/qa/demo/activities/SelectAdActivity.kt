@@ -8,14 +8,14 @@ import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_select_ad.*
 import net.pubnative.qa.demo.PresenterManager
 import net.pubnative.qa.demo.R
-import net.pubnative.qa.demo.presenters.MainPresenter
+import net.pubnative.qa.demo.presenters.SelectAdPresenter
 import net.pubnative.qa.demo.views.BaseView
 import net.pubnative.qa.demo.views.SelectAdView
 import java.lang.Exception
 
 class SelectAdActivity : AppCompatActivity(), SelectAdView {
 
-    private var presenter: MainPresenter? = null
+    private var presenter: SelectAdPresenter? = null
     private var presenterId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,12 +24,15 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
         val id = intent.extras?.getLong(BaseView.PRESENTER_ID, -1L)
 
         if (id != null && id > -1) {
-            presenter = PresenterManager.instance.restorePresenter<MainPresenter>(id)
+            presenter = PresenterManager.instance.restorePresenter<SelectAdPresenter>(id)
             presenterId = id
         } else {
-            presenter = MainPresenter()
+            presenter = SelectAdPresenter()
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
+
+        presenter?.mAppToken = intent.extras?.getString(BaseView.APPTOKEN).toString()
+        presenter?.mPlacementName = intent.extras?.getString(BaseView.PLACEMENT).toString()
 
         setContentView(R.layout.activity_select_ad)
 
