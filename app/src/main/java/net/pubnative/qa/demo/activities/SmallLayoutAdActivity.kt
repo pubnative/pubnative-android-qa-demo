@@ -60,8 +60,8 @@ class SmallLayoutAdActivity : AppCompatActivity(), LayoutAdView {
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
 
-        if (presenterId != null) {
-            outState?.putLong(BaseView.PRESENTER_ID, presenterId as Long)
+        presenterId?.let {
+            outState?.putLong(BaseView.PRESENTER_ID, it)
         }
 
         super.onSaveInstanceState(outState, outPersistentState)
@@ -112,6 +112,10 @@ class SmallLayoutAdActivity : AppCompatActivity(), LayoutAdView {
             btn_start_tracking.background.colorFilter = null
             iv_click_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
         }
+
+        cl_layout_ad_container.visibility = View.INVISIBLE
+        iv_click_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
+        iv_impression_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
     }
 
     override fun loadAdClick() {
