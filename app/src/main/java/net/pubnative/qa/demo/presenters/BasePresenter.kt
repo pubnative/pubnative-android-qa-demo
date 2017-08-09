@@ -1,10 +1,5 @@
 package net.pubnative.qa.demo.presenters
 
-import android.app.ProgressDialog
-import android.content.Context
-import android.support.v7.app.AlertDialog
-import kotlinx.android.synthetic.main.activity_main.*
-import net.pubnative.qa.demo.R
 import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicLong
 

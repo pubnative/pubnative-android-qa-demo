@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
 import net.pubnative.qa.demo.R
 
 class FeedAdapter(val items: MutableList<FeedItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

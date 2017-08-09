@@ -2,13 +2,12 @@ package net.pubnative.qa.demo.presenters
 
 
 import net.pubnative.qa.demo.model.TrackingParam
-import net.pubnative.qa.demo.views.BaseView
 import net.pubnative.qa.demo.views.MainView
 import net.pubnative.sdk.core.Pubnative
 import net.pubnative.sdk.core.config.PNConfigManager
 import net.pubnative.sdk.core.request.PNAdTargetingModel
 
-class MainPresenter : BasePresenter<BaseView>() {
+class MainPresenter : BasePresenter<MainView>() {
 
     var mAppToken : String? = null
     var mPlacementName : String? = null
@@ -24,20 +23,20 @@ class MainPresenter : BasePresenter<BaseView>() {
         if (appToken.isEmpty()) {
             view()?.hideIndicator()
             view()?.showErrorMessage(Exception("App Token is empty!"))
-            (view() as MainView).hideConfigs()
+            view()?.hideConfigs()
         } else {
             mAppToken = appToken
             PNConfigManager.getConfig(view()?.getContext(), appToken) {  model ->
-                (view() as MainView).showConfigs()
+                view()?.showConfigs()
                 val list = ArrayList<String>()
                 if (model == null || model.placements.isEmpty()) {
                     view()?.showErrorMessage(Exception("Config is not loaded!"))
-                    (view() as MainView).hideConfigs()
+                    view()?.hideConfigs()
                 } else {
                     for ((name, _) in model.placements) {
                         list.add(name)
                     }
-                    (view() as MainView).updatePlacementsList(list)
+                    view()?.updatePlacementsList(list)
                     adapterValues.clear()
                     adapterValues.addAll((mTrackingParams.toDictionaryWithIap().flatMap {
                         listOf(TrackingParam(it.key.toString(), it.value.toString()))
@@ -52,8 +51,8 @@ class MainPresenter : BasePresenter<BaseView>() {
         view()?.showIndicator()
         Pubnative.setTargeting(mTrackingParams)
         PNConfigManager.getConfig(view()?.getContext(), mAppToken, {
-            (view() as MainView).updateInitButton()
-            (view() as MainView).updateTrackingParams(adapterValues)
+            view()?.updateInitButton()
+            view()?.updateTrackingParams(adapterValues)
             view()?.hideIndicator()
         })
     }
@@ -71,7 +70,7 @@ class MainPresenter : BasePresenter<BaseView>() {
     }
 
     fun onNext() {
-        (view() as MainView).goToNext()
+        view()?.goToNext()
     }
 
     fun onTrackingParamAdded(key: String, value: String) {
@@ -84,7 +83,7 @@ class MainPresenter : BasePresenter<BaseView>() {
             "interests" -> value.split(",").forEach { mTrackingParams.addInterest(it) }
         }
         adapterValues.clear()
-        adapterValues?.addAll((mTrackingParams.toDictionaryWithIap().flatMap {
+        adapterValues.addAll((mTrackingParams.toDictionaryWithIap().flatMap {
             listOf(TrackingParam(it.key.toString(), it.value.toString()))
         }).toMutableList())
         (view() as MainView).updateTrackingParams(adapterValues)
