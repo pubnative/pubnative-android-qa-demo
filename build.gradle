@@ -3,6 +3,7 @@
 buildscript {
     ext.kotlin_version = '1.1.4-3'
     repositories {
+        maven { url "https://dl.bintray.com/pubnative/maven" }
         google()
         jcenter()
     }
@@ -17,6 +18,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "https://dl.bintray.com/pubnative/maven" }
         google()
         jcenter()
         mavenCentral()
