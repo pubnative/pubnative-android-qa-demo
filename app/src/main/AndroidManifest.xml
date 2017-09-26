@@ -23,7 +23,8 @@
         <activity android:name=".activities.SelectAdActivity" />
         <activity android:name=".activities.SmallLayoutAdActivity" />
         <activity android:name=".activities.MediumLayoutActivity" />
-        <activity android:name=".activities.LargeLayoutActivity"></activity>
+        <activity android:name=".activities.LargeLayoutActivity" />
+        <activity android:name=".activities.ChooseServerActivity"></activity>
     </application>
 
 </manifest>

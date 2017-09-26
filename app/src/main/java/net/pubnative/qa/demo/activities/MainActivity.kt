@@ -124,6 +124,10 @@ class MainActivity : AppCompatActivity(), MainView {
             presenter?.onNext()
         }
 
+        btn_switch_url.setOnClickListener {
+            presenter?.OnChooseServer()
+        }
+
         trackingParamsList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         trackingParamsList.layoutManager = LinearLayoutManager(this)
         trackingParamsList.setHasFixedSize(true)
@@ -152,6 +156,10 @@ class MainActivity : AppCompatActivity(), MainView {
         bundle.putString(BaseView.PLACEMENT, presenter?.mPlacementName)
         intent.putExtras(bundle)
         startActivity(intent)
+    }
+
+    override fun goToChooseServer() {
+        startActivity(Intent(this, ChooseServerActivity::class.java))
     }
 
     override fun updateInitButton() {
