@@ -1,21 +1,21 @@
 package net.pubnative.qa.demo.presenters
 
 
+import net.pubnative.qa.demo.AppSettings
 import net.pubnative.qa.demo.model.TrackingParam
 import net.pubnative.qa.demo.views.MainView
+import net.pubnative.sdk.core.PNSettings
 import net.pubnative.sdk.core.Pubnative
 import net.pubnative.sdk.core.config.PNConfigManager
 import net.pubnative.sdk.core.request.PNAdTargetingModel
 
 class MainPresenter : BasePresenter<MainView>() {
 
-    var mAppToken : String? = null
-    var mPlacementName : String? = null
-    val mTrackingParams : PNAdTargetingModel = PNAdTargetingModel()
-    var adapterValues : MutableList<TrackingParam> = mutableListOf()
+    private val mTrackingParams : PNAdTargetingModel = PNAdTargetingModel()
+    private var adapterValues : MutableList<TrackingParam> = mutableListOf()
 
     override fun updateView() {
-        view()?.updateView(mAppToken, mPlacementName)
+        view()?.updateView()
     }
 
     fun onAppTokenSave(appToken: String) {
@@ -25,7 +25,7 @@ class MainPresenter : BasePresenter<MainView>() {
             view()?.showErrorMessage(Exception("App Token is empty!"))
             view()?.hideConfigs()
         } else {
-            mAppToken = appToken
+            AppSettings.appToken = appToken
             PNConfigManager.getConfig(view()?.getContext(), appToken) {  model ->
                 view()?.showConfigs()
                 val list = ArrayList<String>()
@@ -50,7 +50,7 @@ class MainPresenter : BasePresenter<MainView>() {
     fun onPubnativeInitialize() {
         view()?.showIndicator()
         Pubnative.setTargeting(mTrackingParams)
-        PNConfigManager.getConfig(view()?.getContext(), mAppToken, {
+        PNConfigManager.getConfig(view()?.getContext(), AppSettings.appToken, {
             view()?.updateInitButton()
             view()?.updateTrackingParams(adapterValues)
             view()?.hideIndicator()
@@ -66,11 +66,16 @@ class MainPresenter : BasePresenter<MainView>() {
     }
 
     fun onPlacementSelect(placementName : String) {
-        mPlacementName = placementName
+        AppSettings.placement = placementName
     }
 
     fun onNext() {
+        PNSettings.baseApiUrl = AppSettings.baseApiUrl
         view()?.goToNext()
+    }
+
+    fun OnChooseServer() {
+        view()?.goToChooseServer()
     }
 
     fun onTrackingParamAdded(key: String, value: String) {

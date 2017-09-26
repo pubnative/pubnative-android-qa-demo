@@ -2,6 +2,7 @@ package net.pubnative.qa.demo.presenters
 
 import android.content.Context
 import android.view.ViewGroup
+import net.pubnative.qa.demo.AppSettings
 import net.pubnative.qa.demo.views.NativeAdView
 import net.pubnative.sdk.core.request.PNAdModel
 import net.pubnative.sdk.core.request.PNAdModelHelper
@@ -10,13 +11,11 @@ import java.lang.Exception
 
 class NativeAdPresenter : BasePresenter<NativeAdView>() {
 
-    lateinit var mAppToken : String
-    lateinit var mPlacementName : String
     lateinit var mNativeAd : PNAdModel
     var mResourcesCache : Boolean? = null
 
     override fun updateView() {
-        view()?.updateView("", "")
+        view()?.updateView()
     }
 
     fun makeRequest(context: Context) {
@@ -25,7 +24,7 @@ class NativeAdPresenter : BasePresenter<NativeAdView>() {
 
         val request : PNRequest = PNRequest()
         if (mResourcesCache != null) request.setCacheResources(mResourcesCache as Boolean)
-        request.start(context, mAppToken, mPlacementName, object : PNRequest.Listener {
+        request.start(context, AppSettings.appToken, AppSettings.placement, object : PNRequest.Listener {
             override fun onPNRequestLoadFail(request: PNRequest?, exception: Exception?) {
                 view()?.hideIndicator()
                 view()?.showErrorMessage(exception)

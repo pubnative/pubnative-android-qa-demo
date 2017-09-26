@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), MainView {
         presenter?.onPubnativeInitialize()
     }
 
-    override fun updateView(appToken: String?, placementName: String?) {
+    override fun updateView() {
         btn_save.setOnClickListener {
             saveAppToken(et_app_token.text.toString())
             et_app_token.clearFocus()
@@ -124,6 +124,10 @@ class MainActivity : AppCompatActivity(), MainView {
             presenter?.onNext()
         }
 
+        btn_switch_url.setOnClickListener {
+            presenter?.OnChooseServer()
+        }
+
         trackingParamsList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         trackingParamsList.layoutManager = LinearLayoutManager(this)
         trackingParamsList.setHasFixedSize(true)
@@ -146,12 +150,11 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun goToNext() {
-        val intent = Intent(this, SelectAdActivity::class.java)
-        val bundle = Bundle()
-        bundle.putString(BaseView.APPTOKEN, presenter?.mAppToken)
-        bundle.putString(BaseView.PLACEMENT, presenter?.mPlacementName)
-        intent.putExtras(bundle)
-        startActivity(intent)
+        startActivity(Intent(this, SelectAdActivity::class.java))
+    }
+
+    override fun goToChooseServer() {
+        startActivity(Intent(this, ChooseServerActivity::class.java))
     }
 
     override fun updateInitButton() {

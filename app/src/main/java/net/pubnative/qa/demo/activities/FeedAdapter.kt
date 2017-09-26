@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import net.pubnative.qa.demo.R
 
-class FeedAdapter(val items: MutableList<FeedItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FeedAdapter(private val items: MutableList<FeedItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         if (holder?.itemViewType == 0) {
@@ -22,30 +22,30 @@ class FeedAdapter(val items: MutableList<FeedItem>) : RecyclerView.Adapter<Recyc
     override fun getItemCount() = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == 0) {
+        return if (viewType == 0) {
             val itemView = LayoutInflater.from(parent?.context).inflate(R.layout.infeed_item, parent, false)
             val holder = ViewAdHolder(itemView)
-            return holder
+            holder
         } else {
             val itemView = LayoutInflater.from(parent?.context).inflate(R.layout.infeed_dummy_item, parent, false)
-            return ViewHolder(itemView)
+            ViewHolder(itemView)
         }
     }
 
     override fun getItemId(position: Int) = position.toLong()
 
     override fun getItemViewType(position: Int): Int {
-        if (items[position].adView != null) {
-            return 0
+        return if (items[position].adView != null) {
+            0
         } else {
-            return 1
+            1
         }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     class ViewAdHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val adContainer : LinearLayout = view.findViewById(R.id.ll_ad_container)
+        private val adContainer : LinearLayout = view.findViewById(R.id.ll_ad_container)
 
         fun bindAdView(view: View) {
             adContainer.visibility = View.VISIBLE

@@ -18,5 +18,7 @@ interface MainView : BaseView {
 
     fun goToNext()
 
+    fun goToChooseServer()
+
     fun updateInitButton()
 }

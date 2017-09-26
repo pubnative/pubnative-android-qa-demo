@@ -1,26 +1,28 @@
 package net.pubnative.qa.demo.activities
 
 import android.content.Context
-import android.graphics.PorterDuff
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_layout_ad.*
+import kotlinx.android.synthetic.main.activity_choose_server.*
 import net.pubnative.qa.demo.AppSettings
 import net.pubnative.qa.demo.PresenterManager
 import net.pubnative.qa.demo.R
-import net.pubnative.qa.demo.presenters.LayoutAdPresenter
+import net.pubnative.qa.demo.presenters.ChooseServerPresenter
 import net.pubnative.qa.demo.views.BaseView
-import net.pubnative.qa.demo.views.LayoutAdView
+import net.pubnative.qa.demo.views.ChooseServerView
+import java.lang.Exception
 
-class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
+class ChooseServerActivity : AppCompatActivity(), ChooseServerView {
 
-    private var presenter : LayoutAdPresenter? = null
+    private val STANDARD_URL = "http://api.pubnative.net/api/v3/native"
+    private val STAGING_URL = "http://api-staging.pubnative.net/api/v3/native"
+    private val BACKUP_URL = "http://api-backup.pubnative.net/api/v3/native"
+
+    private  var presenter : ChooseServerPresenter? = null
     private var presenterId : Long? = null
     private lateinit var progress : View
 
@@ -30,14 +32,23 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
         val id = intent.extras?.getLong(BaseView.PRESENTER_ID, -1L)
 
         if (id != null && id > -1) {
-            presenter = PresenterManager.instance.restorePresenter<LayoutAdPresenter>(id)
+            presenter = PresenterManager.instance.restorePresenter(id)
             presenterId = id
         } else {
-            presenter = LayoutAdPresenter()
+            presenter = ChooseServerPresenter()
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 
-        setContentView(R.layout.activity_layout_ad)
+        setContentView(R.layout.activity_choose_server)
+
+        btn_save.setOnClickListener {
+            when(rg_server_url.checkedRadioButtonId) {
+                rb_standard.id -> presenter?.onSaveServerUrl(STANDARD_URL)
+                rb_backup.id -> presenter?.onSaveServerUrl(BACKUP_URL)
+                rb_staging.id -> presenter?.onSaveServerUrl(STAGING_URL)
+                else -> presenter?.onSaveServerUrl(STANDARD_URL)
+            }
+        }
     }
 
     override fun onResume() {
@@ -67,49 +78,25 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
         presenterId = savedInstanceState?.getLong(BaseView.PRESENTER_ID)
     }
 
+    override fun saveServerUrl() {
+        finish()
+    }
+
     override fun getContext(): Context {
-        return this
+        return this@ChooseServerActivity
     }
 
     override fun updateView() {
-        if (!AppSettings.appToken.isEmpty() && !AppSettings.placement.isEmpty()) {
-
-            btn_load.background.colorFilter = null
-            btn_load.setOnClickListener {
-                (it as Button).background.colorFilter = null
-                btn_show.background.colorFilter = null
-                btn_show.isEnabled = false
-                presenter?.onLoadClick(LayoutAdPresenter.Size.LARGE)
-            }
-
-            btn_show.isEnabled = false
-            btn_show.background.colorFilter = null
-            btn_show.setOnClickListener {
-                presenter?.onShowClick()
-            }
+        when(AppSettings.baseApiUrl) {
+            STANDARD_URL -> rb_standard.isChecked = true
+            STAGING_URL -> rb_staging.isChecked = true
+            BACKUP_URL -> rb_backup.isChecked = true
+            else -> rb_standard.isChecked = true
         }
-
-    }
-
-    override fun loadAdClick() {
-        btn_load.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
-        btn_show.isEnabled = true
-    }
-
-    override fun updateClickIndicator() {
-        //Do Nothing
-    }
-
-    override fun updateImpressionIndicator() {
-        //Do Nothing
     }
 
     override fun showErrorMessage(exception: Exception?) {
-        Toast.makeText(this, "Error message: " + exception?.localizedMessage, Toast.LENGTH_LONG).show()
-    }
-
-    override fun showAdClick() {
-        btn_show.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
+        Toast.makeText(this, exception?.localizedMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun hideIndicator() {
