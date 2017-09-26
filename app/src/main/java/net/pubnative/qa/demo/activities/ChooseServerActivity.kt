@@ -18,9 +18,9 @@ import java.lang.Exception
 
 class ChooseServerActivity : AppCompatActivity(), ChooseServerView {
 
-    val STANDARD_URL = "http://api.pubnative.net/api/v3/native"
-    val STAGING_URL = "http://api-staging.pubnative.net/api/v3/native"
-    val BACKUP_URL = "http://api-backup.pubnative.net/api/v3/native"
+    private val STANDARD_URL = "http://api.pubnative.net/api/v3/native"
+    private val STAGING_URL = "http://api-staging.pubnative.net/api/v3/native"
+    private val BACKUP_URL = "http://api-backup.pubnative.net/api/v3/native"
 
     private  var presenter : ChooseServerPresenter? = null
     private var presenterId : Long? = null
@@ -86,7 +86,7 @@ class ChooseServerActivity : AppCompatActivity(), ChooseServerView {
         return this@ChooseServerActivity
     }
 
-    override fun updateView(appToken: String?, placementName: String?) {
+    override fun updateView() {
         when(AppSettings.baseApiUrl) {
             STANDARD_URL -> rb_standard.isChecked = true
             STAGING_URL -> rb_staging.isChecked = true

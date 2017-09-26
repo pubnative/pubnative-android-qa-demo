@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_layout_ad.*
+import net.pubnative.qa.demo.AppSettings
 import net.pubnative.qa.demo.PresenterManager
 import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.presenters.LayoutAdPresenter
@@ -35,9 +36,6 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
             presenter = LayoutAdPresenter()
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
-
-        presenter?.mAppToken = intent.extras?.getString(BaseView.APPTOKEN).toString()
-        presenter?.mPlacementName = intent.extras?.getString(BaseView.PLACEMENT).toString()
 
         setContentView(R.layout.activity_layout_ad)
     }
@@ -73,8 +71,8 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
         return this
     }
 
-    override fun updateView(appToken: String?, placementName: String?) {
-        if (appToken != null && placementName != null) {
+    override fun updateView() {
+        if (!AppSettings.appToken.isEmpty() && !AppSettings.placement.isEmpty()) {
 
             btn_load.background.colorFilter = null
             btn_load.setOnClickListener {

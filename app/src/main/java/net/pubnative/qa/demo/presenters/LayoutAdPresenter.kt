@@ -1,5 +1,6 @@
 package net.pubnative.qa.demo.presenters
 
+import net.pubnative.qa.demo.AppSettings
 import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.activities.FeedAdapter
 import net.pubnative.qa.demo.views.LayoutAdView
@@ -11,9 +12,7 @@ import java.lang.Exception
 
 class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
 
-    lateinit var mAppToken : String
-    lateinit var mPlacementName : String
-    lateinit var mLayout : PNLayout
+    private lateinit var mLayout : PNLayout
     var mFeedItems : MutableList<FeedAdapter.FeedItem> = mutableListOf()
 
     enum class Size {
@@ -24,7 +23,7 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
         for (i in 1..25) {
             mFeedItems.add(FeedAdapter.FeedItem(view()?.getContext()?.resources?.getString(R.string.very_long_string), null))
         }
-        view()?.updateView(mAppToken, mPlacementName)
+        view()?.updateView()
     }
 
     fun onLoadClick(size: Size) {
@@ -49,7 +48,7 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
             }
 
         })
-        mLayout.load(view()?.getContext(), mAppToken, mPlacementName)
+        mLayout.load(view()?.getContext(), AppSettings.appToken, AppSettings.placement)
     }
 
     fun onShowClick() {

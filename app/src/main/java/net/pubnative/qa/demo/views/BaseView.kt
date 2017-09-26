@@ -13,7 +13,7 @@ interface BaseView {
 
     fun getContext(): Context
 
-    fun updateView(appToken: String?, placementName: String?)
+    fun updateView()
 
     fun showErrorMessage(exception: Exception?)
 

@@ -6,7 +6,7 @@ import net.pubnative.qa.demo.views.ChooseServerView
 class ChooseServerPresenter : BasePresenter<ChooseServerView>() {
 
     override fun updateView() {
-        view()?.updateView(null, null)
+        view()?.updateView()
     }
 
     fun onSaveServerUrl(url: String) {

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_select_ad.*
+import net.pubnative.qa.demo.AppSettings
 import net.pubnative.qa.demo.PresenterManager
 import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.presenters.SelectAdPresenter
@@ -30,9 +31,6 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
             presenter = SelectAdPresenter()
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
-
-        presenter?.mAppToken = intent.extras?.getString(BaseView.APPTOKEN).toString()
-        presenter?.mPlacementName = intent.extras?.getString(BaseView.PLACEMENT).toString()
 
         setContentView(R.layout.activity_select_ad)
 
@@ -66,12 +64,7 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     }
 
     override fun goToNative() {
-        val intent = Intent(this, NativeAdActivity::class.java)
-        val bundle = Bundle()
-        bundle.putString(BaseView.APPTOKEN, presenter?.mAppToken)
-        bundle.putString(BaseView.PLACEMENT, presenter?.mPlacementName)
-        intent.putExtras(bundle)
-        startActivity(intent)
+        startActivity(Intent(this, NativeAdActivity::class.java))
     }
 
     override fun getContext(): Context {
@@ -79,17 +72,12 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     }
 
     override fun goToSmallLayout() {
-        val intent = Intent(this, SmallLayoutAdActivity::class.java)
-        val bundle = Bundle()
-        bundle.putString(BaseView.APPTOKEN, presenter?.mAppToken)
-        bundle.putString(BaseView.PLACEMENT, presenter?.mPlacementName)
-        intent.putExtras(bundle)
-        startActivity(intent)
+        startActivity(Intent(this, SmallLayoutAdActivity::class.java))
     }
 
-    override fun updateView(appToken: String?, placementName: String?) {
-        tv_apptoken.text = appToken
-        tv_placement.text = placementName
+    override fun updateView() {
+        tv_apptoken.text = AppSettings.appToken
+        tv_placement.text = AppSettings.placement
 
         btn_native.setOnClickListener {
             goToNative()
@@ -109,21 +97,11 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
     }
 
     override fun goToMediumLayout() {
-        val intent = Intent(this, MediumLayoutActivity::class.java)
-        val bundle = Bundle()
-        bundle.putString(BaseView.APPTOKEN, presenter?.mAppToken)
-        bundle.putString(BaseView.PLACEMENT, presenter?.mPlacementName)
-        intent.putExtras(bundle)
-        startActivity(intent)
+        startActivity(Intent(this, MediumLayoutActivity::class.java))
     }
 
     override fun goToLargeLayout() {
-        val intent = Intent(this, LargeLayoutActivity::class.java)
-        val bundle = Bundle()
-        bundle.putString(BaseView.APPTOKEN, presenter?.mAppToken)
-        bundle.putString(BaseView.PLACEMENT, presenter?.mPlacementName)
-        intent.putExtras(bundle)
-        startActivity(intent)
+        startActivity(Intent(this, LargeLayoutActivity::class.java))
     }
 
     override fun showErrorMessage(exception: Exception?) {

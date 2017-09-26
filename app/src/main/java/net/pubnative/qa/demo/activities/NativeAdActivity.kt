@@ -39,9 +39,6 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 
-        presenter?.mAppToken = intent.extras?.getString(BaseView.APPTOKEN).toString()
-        presenter?.mPlacementName = intent.extras?.getString(BaseView.PLACEMENT).toString()
-
         setContentView(R.layout.activity_native_ad)
     }
 
@@ -96,7 +93,7 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
         btn_show.visibility = View.VISIBLE
     }
 
-    override fun updateView(appToken: String?, placementName: String?) {
+    override fun updateView() {
         btn_load.setOnClickListener {
             reseteFieldsState()
             presenter?.enableResourcesCache(cb_cache_resources.isChecked)
