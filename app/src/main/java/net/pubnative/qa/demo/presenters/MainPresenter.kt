@@ -3,9 +3,9 @@ package net.pubnative.qa.demo.presenters
 
 import net.pubnative.qa.demo.model.TrackingParam
 import net.pubnative.qa.demo.views.MainView
+import net.pubnative.sdk.core.PNAdTargetingModel
 import net.pubnative.sdk.core.Pubnative
 import net.pubnative.sdk.core.config.PNConfigManager
-import net.pubnative.sdk.core.request.PNAdTargetingModel
 
 class MainPresenter : BasePresenter<MainView>() {
 
@@ -26,7 +26,7 @@ class MainPresenter : BasePresenter<MainView>() {
             view()?.hideConfigs()
         } else {
             mAppToken = appToken
-            PNConfigManager.getConfig(view()?.getContext(), appToken) {  model ->
+            PNConfigManager.getConfig(appToken) {  model ->
                 view()?.showConfigs()
                 val list = ArrayList<String>()
                 if (model == null || model.placements.isEmpty()) {
@@ -50,7 +50,7 @@ class MainPresenter : BasePresenter<MainView>() {
     fun onPubnativeInitialize() {
         view()?.showIndicator()
         Pubnative.setTargeting(mTrackingParams)
-        PNConfigManager.getConfig(view()?.getContext(), mAppToken, {
+        PNConfigManager.getConfig(mAppToken, {
             view()?.updateInitButton()
             view()?.updateTrackingParams(adapterValues)
             view()?.hideIndicator()
@@ -78,7 +78,7 @@ class MainPresenter : BasePresenter<MainView>() {
             "age" -> mTrackingParams.age = value.toInt()
             "gender" -> mTrackingParams.gender = value
             "education" -> mTrackingParams.education = value
-            "iap_total" -> mTrackingParams.iap_total = value.toFloat()
+            "iap_total" -> mTrackingParams.iap_total = value.toDouble()
             "iap" -> mTrackingParams.iap = value.toBoolean()
             "interests" -> value.split(",").forEach { mTrackingParams.addInterest(it) }
         }

@@ -25,6 +25,7 @@ import net.pubnative.qa.demo.model.TrackingParam
 import net.pubnative.qa.demo.presenters.MainPresenter
 import net.pubnative.qa.demo.views.BaseView
 import net.pubnative.qa.demo.views.MainView
+import net.pubnative.sdk.core.Pubnative
 import java.lang.Exception
 
 
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Pubnative.init(this, "")
 
         val id = intent.extras?.getLong(BaseView.PRESENTER_ID, -1L)
 
