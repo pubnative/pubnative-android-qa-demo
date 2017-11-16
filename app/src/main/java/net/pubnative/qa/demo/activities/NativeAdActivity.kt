@@ -22,9 +22,9 @@ import java.lang.Exception
 
 class NativeAdActivity : AppCompatActivity(), NativeAdView {
 
-    private var presenter : NativeAdPresenter? = null
-    private var presenterId : Long? = null
-    private lateinit var progress : View
+    private var presenter: NativeAdPresenter? = null
+    private var presenterId: Long? = null
+    private lateinit var progress: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +98,7 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
 
     override fun updateView(appToken: String?, placementName: String?) {
         btn_load.setOnClickListener {
-            reseteFieldsState()
+            resetFieldsState()
             presenter?.enableResourcesCache(cb_cache_resources.isChecked)
             presenter?.makeRequest(this)
         }
@@ -110,12 +110,12 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
         }
     }
 
-    override fun showAdClick(nativeAd: PNAdModel ) {
+    override fun showAdClick(nativeAd: PNAdModel) {
         btn_show.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
         btn_show.isEnabled = false
 
         cl_ad_container.removeAllViews()
-        val adView : View = layoutInflater.inflate(R.layout.native_ad_layout, cl_ad_container, true)
+        val adView: View = layoutInflater.inflate(R.layout.native_ad_layout, cl_ad_container, true)
 
         iv_click_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
         iv_impression_indicator.setImageDrawable(resources.getDrawable(R.drawable.indicator_red))
@@ -125,6 +125,7 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
                 .withTitle(adView.tv_native_title)
                 .withDescription(adView.tv_native_description)
                 .withIcon(adView.iv_native_icon)
+                .withContentInfoContainer(adView.fl_ad_choices)
 
         btn_start_tracking.setOnClickListener {
             presenter?.startTracking(adView as ViewGroup)
@@ -163,7 +164,7 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
         Toast.makeText(this, "Error message: " + exception?.localizedMessage, Toast.LENGTH_LONG).show()
     }
 
-    private fun reseteFieldsState() {
+    private fun resetFieldsState() {
         btn_load.background.colorFilter = null
         btn_show.background.colorFilter = null
         btn_show.visibility = View.INVISIBLE

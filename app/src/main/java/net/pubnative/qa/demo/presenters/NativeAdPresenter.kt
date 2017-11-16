@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import net.pubnative.qa.demo.views.NativeAdView
 import net.pubnative.sdk.request.PNAdModel
 import net.pubnative.sdk.request.PNAdModelAssetHelper
-import net.pubnative.sdk.request.PNAdModelHelper
 import net.pubnative.sdk.request.PNRequest
 import java.lang.Exception
 
