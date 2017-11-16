@@ -2,7 +2,7 @@ package net.pubnative.sdk.request
 
 import java.lang.Exception
 
-class PNAdModelHelper {
+class PNAdModelAssetHelper {
 
     fun fetchResources(adModel: PNAdModel?, listener : (exception : Exception?) -> Unit) {
         adModel?.fetchAssets(object : PNAdModel.FetchListener {
