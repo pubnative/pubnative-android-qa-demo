@@ -17,7 +17,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:hint="App Token"
-        android:text="335807a1524de719d8638c4a6ad4195002ffad900ffa937a19e766b3d0dbe1b6"
+        android:text="de7a474dabc79eac1400b62bd6f6dc408f27b92a863f58db3d8584b2bd25f91c"
         app:layout_constraintEnd_toStartOf="@+id/btn_save"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
