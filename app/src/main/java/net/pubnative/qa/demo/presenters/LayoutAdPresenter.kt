@@ -1,5 +1,6 @@
 package net.pubnative.qa.demo.presenters
 
+import android.content.Context
 import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.activities.FeedAdapter
 import net.pubnative.qa.demo.views.LayoutAdView
@@ -9,7 +10,7 @@ import net.pubnative.sdk.layouts.PNMediumLayout
 import net.pubnative.sdk.layouts.PNSmallLayout
 import java.lang.Exception
 
-class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
+class LayoutAdPresenter(context: Context) : BasePresenter<LayoutAdView>(context) {
 
     lateinit var mAppToken : String
     lateinit var mPlacementName : String
@@ -37,7 +38,7 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
             Size.LARGE -> PNLargeLayout()
         }
 
-        mLayout.setLoadListener(object : PNLayout.LoadListener{
+        mLayout.load(view()?.getContext(), mAppToken, mPlacementName, object : PNLayout.LoadListener{
             override fun onPNLayoutLoadFinish(layout: PNLayout?) {
                 view()?.hideIndicator()
                 view()?.loadAdClick()
@@ -49,7 +50,6 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
             }
 
         })
-        mLayout.load(view()?.getContext(), mAppToken, mPlacementName)
     }
 
     fun onShowClick() {

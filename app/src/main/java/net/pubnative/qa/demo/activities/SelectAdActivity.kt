@@ -27,7 +27,7 @@ class SelectAdActivity : AppCompatActivity(), SelectAdView {
             presenter = PresenterManager.instance.restorePresenter<SelectAdPresenter>(id)
             presenterId = id
         } else {
-            presenter = SelectAdPresenter()
+            presenter = SelectAdPresenter(applicationContext)
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 

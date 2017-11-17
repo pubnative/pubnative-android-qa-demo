@@ -8,7 +8,7 @@ import net.pubnative.sdk.request.PNAdModelAssetHelper
 import net.pubnative.sdk.request.PNRequest
 import java.lang.Exception
 
-class NativeAdPresenter : BasePresenter<NativeAdView>() {
+class NativeAdPresenter(context: Context) : BasePresenter<NativeAdView>(context) {
 
     lateinit var mAppToken : String
     lateinit var mPlacementName : String

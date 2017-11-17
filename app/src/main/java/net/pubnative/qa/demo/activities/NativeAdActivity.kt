@@ -35,7 +35,7 @@ class NativeAdActivity : AppCompatActivity(), NativeAdView {
             presenter = PresenterManager.instance.restorePresenter<NativeAdPresenter>(id)
             presenterId = id
         } else {
-            presenter = NativeAdPresenter()
+            presenter = NativeAdPresenter(applicationContext)
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 
