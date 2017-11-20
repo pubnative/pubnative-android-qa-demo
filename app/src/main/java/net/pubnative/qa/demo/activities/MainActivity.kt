@@ -38,15 +38,13 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Pubnative.init(this, "")
-
         val id = intent.extras?.getLong(BaseView.PRESENTER_ID, -1L)
 
         if (id != null && id > -1) {
             presenter = PresenterManager.instance.restorePresenter<MainPresenter>(id)
             presenterId = id
         } else {
-            presenter = MainPresenter()
+            presenter = MainPresenter(applicationContext)
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 

@@ -5,11 +5,10 @@ import android.view.ViewGroup
 import net.pubnative.qa.demo.views.NativeAdView
 import net.pubnative.sdk.request.PNAdModel
 import net.pubnative.sdk.request.PNAdModelAssetHelper
-import net.pubnative.sdk.request.PNAdModelHelper
 import net.pubnative.sdk.request.PNRequest
 import java.lang.Exception
 
-class NativeAdPresenter : BasePresenter<NativeAdView>() {
+class NativeAdPresenter(context: Context) : BasePresenter<NativeAdView>(context) {
 
     lateinit var mAppToken : String
     lateinit var mPlacementName : String

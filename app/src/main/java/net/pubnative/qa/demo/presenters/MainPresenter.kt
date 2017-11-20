@@ -1,13 +1,14 @@
 package net.pubnative.qa.demo.presenters
 
 
+import android.content.Context
 import net.pubnative.qa.demo.model.TrackingParam
 import net.pubnative.qa.demo.views.MainView
 import net.pubnative.sdk.core.PNAdTargetingModel
 import net.pubnative.sdk.core.Pubnative
 import net.pubnative.sdk.core.config.PNConfigManager
 
-class MainPresenter : BasePresenter<MainView>() {
+class MainPresenter(context: Context) : BasePresenter<MainView>(context) {
 
     var mAppToken : String? = null
     var mPlacementName : String? = null
@@ -26,7 +27,7 @@ class MainPresenter : BasePresenter<MainView>() {
             view()?.hideConfigs()
         } else {
             mAppToken = appToken
-            PNConfigManager.getConfig(appToken) {  model ->
+            PNConfigManager.getConfig(mContext, appToken) {  model ->
                 view()?.showConfigs()
                 val list = ArrayList<String>()
                 if (model == null || model.placements.isEmpty()) {
@@ -50,7 +51,7 @@ class MainPresenter : BasePresenter<MainView>() {
     fun onPubnativeInitialize() {
         view()?.showIndicator()
         Pubnative.setTargeting(mTrackingParams)
-        PNConfigManager.getConfig(mAppToken, {
+        PNConfigManager.getConfig(mContext, mAppToken, {
             view()?.updateInitButton()
             view()?.updateTrackingParams(adapterValues)
             view()?.hideIndicator()
