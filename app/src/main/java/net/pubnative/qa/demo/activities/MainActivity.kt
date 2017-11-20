@@ -17,6 +17,8 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_tracking_param_dialog.view.*
 import net.pubnative.qa.demo.PresenterManager
@@ -37,6 +39,8 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Fabric.with(this, Crashlytics())
 
         val id = intent.extras?.getLong(BaseView.PRESENTER_ID, -1L)
 
