@@ -25,8 +25,11 @@ import net.pubnative.qa.demo.model.TrackingParam
 import net.pubnative.qa.demo.presenters.MainPresenter
 import net.pubnative.qa.demo.views.BaseView
 import net.pubnative.qa.demo.views.MainView
-import net.pubnative.sdk.core.Pubnative
 import java.lang.Exception
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
+
+
 
 
 class MainActivity : AppCompatActivity(), MainView {
@@ -37,6 +40,8 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Fabric.with(this, Crashlytics())
 
         val id = intent.extras?.getLong(BaseView.PRESENTER_ID, -1L)
 

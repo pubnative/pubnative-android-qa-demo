@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -11,8 +10,8 @@ android {
         applicationId "net.pubnative.qa.demo"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 100002
+        versionName "1.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -39,11 +38,14 @@ dependencies {
     implementation 'com.flurry.android:ads:6.9.2'
     implementation 'com.google.firebase:firebase-ads:10.0.1'
     implementation 'com.facebook.android:audience-network-sdk:4.26.0'
-    implementation 'net.pubnative:sdk:2.0.8-development.2540'
-    implementation 'net.pubnative:sdk.adapter.flurry:2.0.8-6.9.2-development.2540'
-    implementation 'net.pubnative:sdk.adapter.facebook:2.0.8-4.26.0-development.2540'
-    implementation 'net.pubnative:sdk.adapter.admob:2.0.8-10.0.1-development.2540'
+    implementation 'net.pubnative:sdk:2.0.8-master.2580'
+    implementation 'net.pubnative:sdk.adapter.flurry:2.0.8-6.9.2-master.2580'
+    implementation 'net.pubnative:sdk.adapter.facebook:2.0.8-4.26.0-master.2580'
+    implementation 'net.pubnative:sdk.adapter.admob:2.0.8-10.0.1-master.2580'
 
+    implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+        transitive = true;
+    }
 
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:design:26.1.0'

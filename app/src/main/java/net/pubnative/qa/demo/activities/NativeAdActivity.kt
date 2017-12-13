@@ -16,7 +16,7 @@ import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.presenters.NativeAdPresenter
 import net.pubnative.qa.demo.views.BaseView
 import net.pubnative.qa.demo.views.NativeAdView
-import net.pubnative.sdk.request.PNAdModel
+import net.pubnative.sdk.core.request.PNAdModel
 import java.lang.Exception
 
 

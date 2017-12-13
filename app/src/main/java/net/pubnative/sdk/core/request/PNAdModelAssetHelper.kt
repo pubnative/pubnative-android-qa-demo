@@ -1,4 +1,4 @@
-package net.pubnative.sdk.request
+package net.pubnative.sdk.core.request
 
 import java.lang.Exception
 

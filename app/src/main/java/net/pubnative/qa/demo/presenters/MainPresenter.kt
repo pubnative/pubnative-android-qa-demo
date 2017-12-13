@@ -4,9 +4,9 @@ package net.pubnative.qa.demo.presenters
 import android.content.Context
 import net.pubnative.qa.demo.model.TrackingParam
 import net.pubnative.qa.demo.views.MainView
-import net.pubnative.sdk.core.PNAdTargetingModel
 import net.pubnative.sdk.core.Pubnative
 import net.pubnative.sdk.core.config.PNConfigManager
+import net.pubnative.sdk.core.request.PNAdTargetingModel
 
 class MainPresenter(context: Context) : BasePresenter<MainView>(context) {
 
@@ -79,7 +79,7 @@ class MainPresenter(context: Context) : BasePresenter<MainView>(context) {
             "age" -> mTrackingParams.age = value.toInt()
             "gender" -> mTrackingParams.gender = value
             "education" -> mTrackingParams.education = value
-            "iap_total" -> mTrackingParams.iap_total = value.toDouble()
+            "iap_total" -> mTrackingParams.iap_total = value.toFloat()
             "iap" -> mTrackingParams.iap = value.toBoolean()
             "interests" -> value.split(",").forEach { mTrackingParams.addInterest(it) }
         }

@@ -3,9 +3,9 @@ package net.pubnative.qa.demo.presenters
 import android.content.Context
 import android.view.ViewGroup
 import net.pubnative.qa.demo.views.NativeAdView
-import net.pubnative.sdk.request.PNAdModel
-import net.pubnative.sdk.request.PNAdModelAssetHelper
-import net.pubnative.sdk.request.PNRequest
+import net.pubnative.sdk.core.request.PNAdModel
+import net.pubnative.sdk.core.request.PNAdModelAssetHelper
+import net.pubnative.sdk.core.request.PNRequest
 import java.lang.Exception
 
 class NativeAdPresenter(context: Context) : BasePresenter<NativeAdView>(context) {

@@ -24,6 +24,10 @@
         <activity android:name=".activities.SmallLayoutAdActivity" />
         <activity android:name=".activities.MediumLayoutActivity" />
         <activity android:name=".activities.LargeLayoutActivity"></activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="f61a9f30a8156746aae4b1cc84856189a3bf8575" />
     </application>
 
 </manifest>
