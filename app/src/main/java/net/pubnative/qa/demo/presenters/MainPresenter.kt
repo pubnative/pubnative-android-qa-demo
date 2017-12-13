@@ -1,21 +1,22 @@
 package net.pubnative.qa.demo.presenters
 
 
-import net.pubnative.qa.demo.AppSettings
+import android.content.Context
 import net.pubnative.qa.demo.model.TrackingParam
 import net.pubnative.qa.demo.views.MainView
-import net.pubnative.sdk.core.PNSettings
+import net.pubnative.sdk.core.PNAdTargetingModel
 import net.pubnative.sdk.core.Pubnative
 import net.pubnative.sdk.core.config.PNConfigManager
-import net.pubnative.sdk.core.request.PNAdTargetingModel
 
-class MainPresenter : BasePresenter<MainView>() {
+class MainPresenter(context: Context) : BasePresenter<MainView>(context) {
 
-    private val mTrackingParams : PNAdTargetingModel = PNAdTargetingModel()
-    private var adapterValues : MutableList<TrackingParam> = mutableListOf()
+    var mAppToken : String? = null
+    var mPlacementName : String? = null
+    val mTrackingParams : PNAdTargetingModel = PNAdTargetingModel()
+    var adapterValues : MutableList<TrackingParam> = mutableListOf()
 
     override fun updateView() {
-        view()?.updateView()
+        view()?.updateView(mAppToken, mPlacementName)
     }
 
     fun onAppTokenSave(appToken: String) {
@@ -25,8 +26,8 @@ class MainPresenter : BasePresenter<MainView>() {
             view()?.showErrorMessage(Exception("App Token is empty!"))
             view()?.hideConfigs()
         } else {
-            AppSettings.appToken = appToken
-            PNConfigManager.getConfig(view()?.getContext(), appToken) {  model ->
+            mAppToken = appToken
+            PNConfigManager.getConfig(mContext, appToken) {  model ->
                 view()?.showConfigs()
                 val list = ArrayList<String>()
                 if (model == null || model.placements.isEmpty()) {
@@ -50,7 +51,7 @@ class MainPresenter : BasePresenter<MainView>() {
     fun onPubnativeInitialize() {
         view()?.showIndicator()
         Pubnative.setTargeting(mTrackingParams)
-        PNConfigManager.getConfig(view()?.getContext(), AppSettings.appToken, {
+        PNConfigManager.getConfig(mContext, mAppToken, {
             view()?.updateInitButton()
             view()?.updateTrackingParams(adapterValues)
             view()?.hideIndicator()
@@ -66,16 +67,11 @@ class MainPresenter : BasePresenter<MainView>() {
     }
 
     fun onPlacementSelect(placementName : String) {
-        AppSettings.placement = placementName
+        mPlacementName = placementName
     }
 
     fun onNext() {
-        PNSettings.baseApiUrl = AppSettings.baseApiUrl
         view()?.goToNext()
-    }
-
-    fun OnChooseServer() {
-        view()?.goToChooseServer()
     }
 
     fun onTrackingParamAdded(key: String, value: String) {
@@ -83,7 +79,7 @@ class MainPresenter : BasePresenter<MainView>() {
             "age" -> mTrackingParams.age = value.toInt()
             "gender" -> mTrackingParams.gender = value
             "education" -> mTrackingParams.education = value
-            "iap_total" -> mTrackingParams.iap_total = value.toFloat()
+            "iap_total" -> mTrackingParams.iap_total = value.toDouble()
             "iap" -> mTrackingParams.iap = value.toBoolean()
             "interests" -> value.split(",").forEach { mTrackingParams.addInterest(it) }
         }

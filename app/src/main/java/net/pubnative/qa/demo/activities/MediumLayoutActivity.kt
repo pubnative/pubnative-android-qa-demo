@@ -34,7 +34,7 @@ class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
             presenter = PresenterManager.instance.restorePresenter<LayoutAdPresenter>(id)
             presenterId = id
         } else {
-            presenter = LayoutAdPresenter()
+            presenter = LayoutAdPresenter(applicationContext)
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 
@@ -136,6 +136,7 @@ class MediumLayoutActivity : AppCompatActivity(), LayoutAdView {
         cl_layout_ad_container.visibility = View.VISIBLE
         btn_show.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY)
         rv_feed.adapter.notifyItemChanged(7)
+        btn_show.isEnabled = false
     }
 
     override fun hideIndicator() {

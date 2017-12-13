@@ -4,12 +4,12 @@ import android.content.Context
 import android.view.ViewGroup
 import net.pubnative.qa.demo.AppSettings
 import net.pubnative.qa.demo.views.NativeAdView
-import net.pubnative.sdk.core.request.PNAdModel
-import net.pubnative.sdk.core.request.PNAdModelHelper
-import net.pubnative.sdk.core.request.PNRequest
+import net.pubnative.sdk.request.PNAdModel
+import net.pubnative.sdk.request.PNAdModelAssetHelper
+import net.pubnative.sdk.request.PNRequest
 import java.lang.Exception
 
-class NativeAdPresenter : BasePresenter<NativeAdView>() {
+class NativeAdPresenter(context: Context) : BasePresenter<NativeAdView>(context) {
 
     lateinit var mNativeAd : PNAdModel
     var mResourcesCache : Boolean? = null
@@ -45,7 +45,7 @@ class NativeAdPresenter : BasePresenter<NativeAdView>() {
 
         view()?.showIndicator()
 
-        val helper = PNAdModelHelper()
+        val helper = PNAdModelAssetHelper()
         helper.fetchResources(mNativeAd, {exception ->
             if (exception == null) {
                 view()?.fetchAdClick()

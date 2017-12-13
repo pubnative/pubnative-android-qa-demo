@@ -1,6 +1,6 @@
 package net.pubnative.qa.demo.views
 
-import net.pubnative.sdk.core.request.PNAdModel
+import net.pubnative.sdk.request.PNAdModel
 
 interface NativeAdView : BaseView {
 

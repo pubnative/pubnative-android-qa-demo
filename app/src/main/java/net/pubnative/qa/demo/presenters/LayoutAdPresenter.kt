@@ -1,6 +1,6 @@
 package net.pubnative.qa.demo.presenters
 
-import net.pubnative.qa.demo.AppSettings
+import android.content.Context
 import net.pubnative.qa.demo.R
 import net.pubnative.qa.demo.activities.FeedAdapter
 import net.pubnative.qa.demo.views.LayoutAdView
@@ -10,9 +10,11 @@ import net.pubnative.sdk.layouts.PNMediumLayout
 import net.pubnative.sdk.layouts.PNSmallLayout
 import java.lang.Exception
 
-class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
+class LayoutAdPresenter(context: Context) : BasePresenter<LayoutAdView>(context) {
 
-    private lateinit var mLayout : PNLayout
+    lateinit var mAppToken : String
+    lateinit var mPlacementName : String
+    lateinit var mLayout : PNLayout
     var mFeedItems : MutableList<FeedAdapter.FeedItem> = mutableListOf()
 
     enum class Size {
@@ -23,7 +25,7 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
         for (i in 1..25) {
             mFeedItems.add(FeedAdapter.FeedItem(view()?.getContext()?.resources?.getString(R.string.very_long_string), null))
         }
-        view()?.updateView()
+        view()?.updateView(mAppToken, mPlacementName)
     }
 
     fun onLoadClick(size: Size) {
@@ -36,7 +38,7 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
             Size.LARGE -> PNLargeLayout()
         }
 
-        mLayout.setLoadListener(object : PNLayout.LoadListener{
+        mLayout.load(view()?.getContext(), mAppToken, mPlacementName, object : PNLayout.LoadListener{
             override fun onPNLayoutLoadFinish(layout: PNLayout?) {
                 view()?.hideIndicator()
                 view()?.loadAdClick()
@@ -48,7 +50,6 @@ class LayoutAdPresenter : BasePresenter<LayoutAdView>() {
             }
 
         })
-        mLayout.load(view()?.getContext(), AppSettings.appToken, AppSettings.placement)
     }
 
     fun onShowClick() {

@@ -25,6 +25,7 @@ import net.pubnative.qa.demo.model.TrackingParam
 import net.pubnative.qa.demo.presenters.MainPresenter
 import net.pubnative.qa.demo.views.BaseView
 import net.pubnative.qa.demo.views.MainView
+import net.pubnative.sdk.core.Pubnative
 import java.lang.Exception
 
 
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity(), MainView {
             presenter = PresenterManager.instance.restorePresenter<MainPresenter>(id)
             presenterId = id
         } else {
-            presenter = MainPresenter()
+            presenter = MainPresenter(applicationContext)
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 

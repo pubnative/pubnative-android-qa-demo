@@ -1,9 +1,16 @@
 package net.pubnative.qa.demo.presenters
 
+import android.content.Context
 import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicLong
 
 abstract class BasePresenter<V> {
+
+    val mContext : Context
+
+    constructor(context: Context) {
+        mContext = context
+    }
 
     lateinit var mView : WeakReference<V>
 

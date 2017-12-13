@@ -33,7 +33,7 @@ class LargeLayoutActivity : AppCompatActivity(), LayoutAdView {
             presenter = PresenterManager.instance.restorePresenter<LayoutAdPresenter>(id)
             presenterId = id
         } else {
-            presenter = LayoutAdPresenter()
+            presenter = LayoutAdPresenter(applicationContext)
             presenterId = PresenterManager.instance.savePresenter(presenter)
         }
 
